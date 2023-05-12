@@ -21,8 +21,8 @@ const getRandomInteger = function (min, max) {
     return NaN;
   }
 
-  const minNumber = Math.min(min, max);
-  const maxNumber = Math.max(min, max);
+  const minNumber = Math.ceil(Math.min(min, max));
+  const maxNumber = Math.floor(Math.max(min, max));
 
   const randomNumber = Math.floor(Math.random() * (maxNumber - minNumber + 1) + minNumber);
 
