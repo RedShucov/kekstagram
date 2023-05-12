@@ -17,7 +17,7 @@ checkStringIsLength(myString, 140);
  * @returns {number} случайное число.
  */
 const getRandomInteger = function (min, max) {
-  if (!Number.isInteger(min && max) || (min || max) < 0) {
+  if (min < 0 || max < 0) {
     return NaN;
   }
 
