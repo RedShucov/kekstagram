@@ -163,3 +163,15 @@ const getRandomArrayElement = (array) => {
 
   return randomArrayElement;
 };
+
+/**
+ * Функция создаёт моковый комменатарий,
+ * Который в дальнейшем можно вставить в объект с данными фотографии.
+ * @returns {Object}
+ */
+const createMockComment = () => ({
+  id: getRandomUniqueInteger(1, 1000),
+  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  message: getRandomArrayElement(MOCK_COMMENTS),
+  name: getRandomArrayElement(MOCK_COMMENTATORS)
+});
