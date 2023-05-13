@@ -138,7 +138,7 @@ const uniqueNumbers = new Set();
  * Произойдет возврат этого значения.
  * @param {number} min - нижняя граница диапазона.
  * @param {number} max - верхняя граница диапазона.
- * @returns
+ * @returns {number} случайное уникальное целое число.
  */
 const getRandomUniqueInteger = function (min, max) {
   let randomNumber;
@@ -148,4 +148,18 @@ const getRandomUniqueInteger = function (min, max) {
 
   uniqueNumbers.add(randomNumber);
   return randomNumber;
+};
+
+/**
+ * Функция, принимает массив на вход и вырезает случайный его элемент,
+ * После чего производит возврат этого значения.
+ * @param {Array} array
+ * @returns элемент массива
+ */
+const getRandomArrayElement = (array) => {
+  const arrayIndex = getRandomInteger(array.length - 1);
+
+  const randomArrayElement = array.splice(arrayIndex, 1)[0];
+
+  return randomArrayElement;
 };
