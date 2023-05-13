@@ -32,7 +32,7 @@ const getRandomInteger = function (min, max) {
 getRandomInteger(1, 5);
 
 /**
- * Массив имен для комментаторов
+ * Массив имен комментаторов
  */
 const MOCK_COMMENTATORS = [
   'Николай',
@@ -63,7 +63,7 @@ const MOCK_COMMENTATORS = [
 ];
 
 /**
- * Массив комментариев к фото
+ * Массив комментариев под фото
  */
 const MOCK_COMMENTS = [
   'Прекрасный пейзаж!',
@@ -94,7 +94,7 @@ const MOCK_COMMENTS = [
 ];
 
 /**
- * Массив описаний для фото
+ * Массив описаний к фотографии
  */
 const MOCK_DESCRIPTIONS = [
   'Наслаждаясь моментом...',
@@ -124,31 +124,28 @@ const MOCK_DESCRIPTIONS = [
   'Танцуя под открытым небом.'
 ];
 
-const getMockDataPhotos = function (descriptions, comments, commentators) {
-  const arr = [];
+/**
+ * Набор ииспользуемых уникальный значений
+ */
+const uniqueNumbers = new Set();
 
-  for (let index = 1; index <= 25; index++) {
-    const photoData = {
-      'id': index,
-      'url': `photos/${index}.jpg`,
-      'description': descriptions.shift(index - 1),
-      'likes': getRandomInteger(15, 200),
-      'comments': [
-        {
-          id: getRandomInteger(0, 7),
-          avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-          message: comments.shift(index - 1),
-          name: commentators.shift(index - 1),
-        }
-      ]
-    };
+/**
+ * Функция, генерирует случайное уникальное число
+ * В ходе программы происходит генерация случайного числа
+ * После в цикле проверяется, есть ли оно в uniqueNumbers
+ * Если есть, генерируется новое число,
+ * как только будет получено число которого нет в uniqueNumbers
+ * Произойдет возврат этого значения.
+ * @param {number} min - нижняя граница диапазона.
+ * @param {number} max - верхняя граница диапазона.
+ * @returns
+ */
+const getRandomUniqueInteger = function (min, max) {
+  let randomNumber;
+  do {
+    randomNumber = getRandomInteger(min, max);
+  } while (uniqueNumbers.has(randomNumber));
 
-    arr.push(photoData);
-  }
-
-  return arr;
+  uniqueNumbers.add(randomNumber);
+  return randomNumber;
 };
-
-const test = getMockDataPhotos(MOCK_DESCRIPTIONS, MOCK_COMMENTS, MOCK_COMMENTATORS);
-
-console.log(test);
