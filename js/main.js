@@ -29,7 +29,7 @@ const getRandomInteger = function (min, max) {
   return randomNumber;
 };
 
-getRandomInteger(1, 5);
+const PHOTO_DATA_COUNT = 25;
 
 /**
  * Массив имен комментаторов
@@ -190,4 +190,4 @@ const createMockPhotoData = (index) => ({
 });
 
 // eslint-disable-next-line no-unused-vars
-const mockPhotoData = Array.from({ length: 5 }, (_, index) => createMockPhotoData(index));
+const mockPhotoData = Array.from({ length: PHOTO_DATA_COUNT }, (_, index) => createMockPhotoData(index));
