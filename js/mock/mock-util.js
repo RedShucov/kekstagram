@@ -12,7 +12,7 @@ const checkStringIsLength = (string, maxLength) => string.length <= maxLength;
  * @param {number} max - верхняя граница диапазона.
  * @returns {number} случайное число.
  */
-const getRandomInteger = function (min, max) {
+const getRandomInteger = (min, max) => {
   if (min < 0 || max < 0) {
     return NaN;
   }
@@ -41,7 +41,7 @@ const uniqueNumbers = new Set();
  * @param {number} max - верхняя граница диапазона.
  * @returns {number} случайное уникальное целое число.
  */
-const getRandomUniqueInteger = function (min, max) {
+const getRandomUniqueInteger = (min, max) => {
   let randomNumber;
   do {
     randomNumber = getRandomInteger(min, max);
