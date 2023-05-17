@@ -6,7 +6,7 @@ import { PHOTO_DATA_COUNT, MOCK_COMMENTATORS, MOCK_COMMENTS, MOCK_DESCRIPTIONS }
  * В дальнейшем его можно вставить в объект с данными о фотографии.
  * @returns {Object} комментарий в виде объекта.
  */
-const createMockComment = () => ({
+const createComment = () => ({
   id: getRandomUniqueInteger(1, 1000),
   avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
   message: getRandomArrayElement(MOCK_COMMENTS),
@@ -18,14 +18,14 @@ const createMockComment = () => ({
  * @param {number} index - индекс текущей фотографии.
  * @returns {Object} данные о фотографии в виде объекта.
  */
-const createMockPhotoData = (index) => ({
+const createPhotoData = (index) => ({
   id: index + 1,
   url: `photos/${index + 1}.jpg`,
   description: getRandomArrayElement(MOCK_DESCRIPTIONS),
   likes: getRandomInteger(15, 200),
-  comments: Array.from({ length: getRandomInteger(1, 5) }, createMockComment)
+  comments: Array.from({ length: getRandomInteger(1, 5) }, createComment)
 });
 
-const createArrayMockPhotoData = () => Array.from({ length: PHOTO_DATA_COUNT }, (_, index) => createMockPhotoData(index));
+const createPhotosData = () => Array.from({ length: PHOTO_DATA_COUNT }, (_, index) => createPhotoData(index));
 
-export { createArrayMockPhotoData };
+export { createPhotosData };
