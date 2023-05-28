@@ -58,7 +58,7 @@ const getRandomUniqueInteger = (min, max) => {
  * @returns элемент массива.
  */
 const getRandomArrayElement = (array) => {
-  const arrayIndex = getRandomInteger(array.length - 1);
+  const arrayIndex = getRandomInteger(0, array.length - 1);
 
   const randomArrayElement = array.splice(arrayIndex, 1)[0];
 
