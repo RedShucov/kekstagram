@@ -26,6 +26,10 @@ const createPhotoData = (index) => ({
   comments: Array.from({ length: getRandomInteger(1, 5) }, createComment)
 });
 
+/**
+ * Функция, создаёт массив объектов данных о фотографиях со случайными данными в них.
+ * @returns {Array} массив объектов содержащих данные о фотографиях.
+ */
 const createPhotosData = () => Array.from({ length: PHOTO_DATA_COUNT }, (_, index) => createPhotoData(index));
 
 export { createPhotosData };
