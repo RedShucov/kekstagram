@@ -1,6 +1,6 @@
 import { createPhotosData } from './mock/mock-data-generator.js';
+import { renderThumbnails } from './render-data/render-thumbnails.js';
 
-// eslint-disable-next-line no-console
-console.log(
-  createPhotosData()
-);
+const photosData = createPhotosData();
+
+renderThumbnails(photosData);
