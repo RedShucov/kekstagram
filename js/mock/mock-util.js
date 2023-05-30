@@ -65,4 +65,12 @@ const getRandomArrayElement = (array) => {
   return randomArrayElement;
 };
 
-export { checkStringIsLength, getRandomInteger, getRandomUniqueInteger, getRandomArrayElement };
+const getRandomComment = (array) => {
+  const arrayIndex = getRandomInteger(0, array.length - 1);
+
+  const randomArrayElement = array[arrayIndex];
+
+  return randomArrayElement;
+};
+
+export { checkStringIsLength, getRandomInteger, getRandomUniqueInteger, getRandomArrayElement, getRandomComment };
