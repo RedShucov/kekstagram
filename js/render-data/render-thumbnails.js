@@ -1,3 +1,5 @@
+import { onRenderPhotoHandler } from './render-picture.js';
+
 const usersPhotoList = document.querySelector('.pictures');
 const templatePicture = document.querySelector('#picture').content.querySelector('.picture');
 
@@ -19,6 +21,8 @@ const createThumbnail = (photoData) => {
   thumbnail.querySelector('.picture__img').alt = description;
   thumbnail.querySelector('.picture__comments').textContent = comments.length;
   thumbnail.querySelector('.picture__likes').textContent = likes;
+
+  thumbnail.addEventListener('click', onRenderPhotoHandler(photoData));
 
   return thumbnail;
 };
