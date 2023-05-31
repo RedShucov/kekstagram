@@ -1,4 +1,4 @@
-import { getRandomInteger, getRandomUniqueInteger, getRandomArrayElement, getRandomComment } from './mock-util.js';
+import { getRandomInteger, getRandomUniqueInteger, getRandomUniqueArrayElement, getRandomArrayElement } from './mock-util.js';
 import { PHOTO_DATA_COUNT, MOCK_COMMENTATORS, MOCK_COMMENTS, MOCK_DESCRIPTIONS } from './mock-data-list.js';
 
 /**
@@ -9,7 +9,7 @@ import { PHOTO_DATA_COUNT, MOCK_COMMENTATORS, MOCK_COMMENTS, MOCK_DESCRIPTIONS }
 const createComment = () => ({
   id: getRandomUniqueInteger(1, 1000),
   avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-  message: getRandomComment(MOCK_COMMENTS),
+  message: getRandomArrayElement(MOCK_COMMENTS),
   name: getRandomArrayElement(MOCK_COMMENTATORS)
 });
 
@@ -21,9 +21,9 @@ const createComment = () => ({
 const createPhotoData = (index) => ({
   id: index + 1,
   url: `photos/${index + 1}.jpg`,
-  description: getRandomArrayElement(MOCK_DESCRIPTIONS),
+  description: getRandomUniqueArrayElement(MOCK_DESCRIPTIONS),
   likes: getRandomInteger(15, 200),
-  comments: Array.from({ length: getRandomInteger(1, 5) }, createComment)
+  comments: Array.from({ length: getRandomInteger(1, 10) }, createComment)
 });
 
 /**

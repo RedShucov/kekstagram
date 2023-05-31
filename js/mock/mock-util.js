@@ -57,7 +57,7 @@ const getRandomUniqueInteger = (min, max) => {
  * @param {Array} array - массив из которого будет взят элемент.
  * @returns элемент массива.
  */
-const getRandomArrayElement = (array) => {
+const getRandomUniqueArrayElement = (array) => {
   const arrayIndex = getRandomInteger(0, array.length - 1);
 
   const randomArrayElement = array.splice(arrayIndex, 1)[0];
@@ -65,7 +65,7 @@ const getRandomArrayElement = (array) => {
   return randomArrayElement;
 };
 
-const getRandomComment = (array) => {
+const getRandomArrayElement = (array) => {
   const arrayIndex = getRandomInteger(0, array.length - 1);
 
   const randomArrayElement = array[arrayIndex];
@@ -73,4 +73,4 @@ const getRandomComment = (array) => {
   return randomArrayElement;
 };
 
-export { checkStringIsLength, getRandomInteger, getRandomUniqueInteger, getRandomArrayElement, getRandomComment };
+export { checkStringIsLength, getRandomInteger, getRandomUniqueInteger, getRandomUniqueArrayElement, getRandomArrayElement };
