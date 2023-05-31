@@ -10,9 +10,11 @@ const templatePicture = document.querySelector('#picture').content.querySelector
  * @param {number} photoData.likes - Количесвто лайков фотокарточки.
  * @returns {HTMLElement} элемент миниатюры.
  */
-const createThumbnail = ({ url, description, comments, likes }) => {
+const createThumbnail = (photoData) => {
   const thumbnail = templatePicture.cloneNode(true);
+  const { id, url, description, comments, likes } = photoData;
 
+  thumbnail.dataset.photoId = id;
   thumbnail.querySelector('.picture__img').src = url;
   thumbnail.querySelector('.picture__img').alt = description;
   thumbnail.querySelector('.picture__comments').textContent = comments.length;
