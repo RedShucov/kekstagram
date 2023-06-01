@@ -1,20 +1,20 @@
-const siteBody = document.body;
 const photo = document.querySelector('.big-picture');
+const photoImage = photo.querySelector('.big-picture__img img');
+const photoLikes = photo.querySelector('.likes-count');
 const photoComments = photo.querySelector('.social__comments');
 const photoCommentCount = photo.querySelector('.social__comment-count');
 const photoСurrentComment = photo.querySelector('.comments-current');
 const photoTotalComment = photo.querySelector('.comments-total');
 const photoCommentsLoader = photo.querySelector('.social__comments-loader');
-const photoImage = photo.querySelector('.big-picture__img img');
-const photoLikes = photo.querySelector('.likes-count');
-
 const photoClosure = photo.querySelector('.big-picture__cancel');
+
+const SHOW_COMMENTS_STEP = 5;
 
 /**
  * Функция, для открытия полноценного изображения.
  */
 const openFullPhoto = () => {
-  siteBody.classList.add('modal-open');
+  document.body.classList.add('modal-open');
   photo.classList.remove('hidden');
 };
 
@@ -22,7 +22,7 @@ const openFullPhoto = () => {
  * Функция, для закрытия полноценного изображения.
  */
 const closeFullPhoto = () => {
-  siteBody.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
   photo.classList.add('hidden');
 };
 
@@ -52,7 +52,7 @@ const createComment = ({ avatar, name, message }) => (
 const renderComments = (comments) => () => {
   let shownСommentsCount = photoСurrentComment.textContent;
 
-  const toShowCount = Math.min(shownСommentsCount + 5, comments.length);
+  const toShowCount = Math.min(shownСommentsCount + SHOW_COMMENTS_STEP, comments.length);
 
   for (let i = shownСommentsCount; i < toShowCount; i++) {
     const comment = comments[i];
@@ -104,7 +104,7 @@ const onClickCloseFullPhoto = () => {
 
 document.addEventListener('keydown', (evt) => {
   if (evt.key === 'Escape') {
-    siteBody.classList.remove('modal-open');
+    document.body.classList.remove('modal-open');
     photo.classList.add('hidden');
   }
 });
