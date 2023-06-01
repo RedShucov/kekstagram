@@ -2,12 +2,10 @@ const photo = document.querySelector('.big-picture');
 const photoImage = photo.querySelector('.big-picture__img img');
 const photoLikes = photo.querySelector('.likes-count');
 const photoComments = photo.querySelector('.social__comments');
+const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 const photoCommentCount = photo.querySelector('.social__comment-count');
-const photoСurrentComment = photo.querySelector('.comments-current');
-const photoTotalComment = photo.querySelector('.comments-total');
 const photoCommentsLoader = photo.querySelector('.social__comments-loader');
 const photoClosure = photo.querySelector('.big-picture__cancel');
-
 const SHOW_COMMENTS_STEP = 5;
 
 /**
@@ -34,33 +32,29 @@ const closeFullPhoto = () => {
  * @param {string} comment.message - текст комментария.
  * @returns {string} - строка с HTML-кодом комментария.
  */
-const createComment = ({ avatar, name, message }) => (
-  `<li class="social__comment">
-    <img
-        class="social__picture"
-        src="${avatar}"
-        alt="${name}"
-        width="35" height="35">
-    <p class="social__text">${message}</p>
-  </li>`
-);
+const createComment = ({ avatar, message, name }) => {
+  const comment = commentTemplate.cloneNode(true);
+
+  comment.querySelector('.social__picture').src = avatar;
+  comment.querySelector('.social__picture').alt = name;
+  comment.querySelector('.social__text').textContent = message;
+
+  return comment;
+};
 
 /**
  * Функция, отрисовывает комментарии к фотографии.
  * @param {Array} photoData.comments - массив комментариев к фотографии.
  */
 const renderComments = (comments) => () => {
-  let shownСommentsCount = photoСurrentComment.textContent;
-
+  const shownСommentsCount = document.querySelectorAll('.social__comment').length;
   const toShowCount = Math.min(shownСommentsCount + SHOW_COMMENTS_STEP, comments.length);
 
   for (let i = shownСommentsCount; i < toShowCount; i++) {
     const comment = comments[i];
-    photoComments.insertAdjacentHTML('beforeend', createComment(comment));
-    photoСurrentComment.textContent = i + 1;
-  }
 
-  shownСommentsCount = toShowCount;
+    photoComments.append(createComment(comment));
+  }
 };
 
 /**
@@ -78,9 +72,7 @@ const renderPhoto = ({ url, description, comments, likes }) => {
   photoImage.src = url;
   photoImage.alt = description;
   photoLikes.textContent = likes;
-  photoTotalComment.textContent = comments.length;
   photoComments.innerHTML = '';
-  photoСurrentComment.textContent = 0;
 
   const renderFirstComments = renderComments(comments);
   renderFirstComments();
