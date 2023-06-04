@@ -14,22 +14,20 @@ const HastagsRules = {
 /**
  * Инициализация pristine.
  */
-const pristine = new Pristine(
-  uploadForm,
-  {
-    classTo: 'img-upload__field-wrapper',
-    errorClass: 'img-upload__field-wrapper--invalid',
-    successClass: 'img-upload__field-wrapper--valid'
-  }
-);
+const pristine = new Pristine(uploadForm, {
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'img-upload__field-wrapper--invalid',
+  successClass: 'img-upload__field-wrapper--valid',
+  errorTextParent: 'img-upload__field-wrapper'
+});
 
 /**
  * Функция, валидирует введенные хэштеги.
- * @param {string} value - данные из поля ввода хэштегов, в виде строки.
+ * @param {string} value - Данные из поля ввода хэштегов, в виде строки.
  * @returns {boolean} true или false в завимости от пройденной валидации.
  */
 const validateHashtags = (value) => {
-  // Так как это после необязательное, в слуаче если поле пустое, пропускает валидацию.
+  // Так как это поле необязательное, в слуаче если поле пустое, пропускает валидацию.
   if (!value) {
     return true;
   }
@@ -53,13 +51,13 @@ const validateHashtags = (value) => {
 
 /**
  * Функция, валидирует введенный комментарий.
- * @param {string} value - данные из поля ввода описания, в виде строки.
+ * @param {string} value - Данные из поля ввода описания, в виде строки.
  * @returns {boolean} true или false в завимости от пройденной валидации.
  */
 const validateDescription = (value) => value.length >= DescriptionRules.MIN_LENGTH && value.length <= DescriptionRules.MAX_LENGTH;
 
 /**
- * Добаление валидаторы для поля описания.
+ * Добаление валидатора для поля описания.
  */
 pristine.addValidator(
   uploadForm.querySelector('[name="description"]'),
@@ -67,20 +65,24 @@ pristine.addValidator(
 );
 
 /**
- * Добаление валидаторы для поля хэштегов.
+ * Добаление валидатора для поля хэштегов.
  */
 pristine.addValidator(
   uploadForm.querySelector('[name="hashtags"]'),
   validateHashtags
 );
 
-uploadForm.addEventListener('submit', (event) => {
-  event.preventDefault();
+const setUserFormSubmit = () => {
+  uploadForm.addEventListener('submit', (event) => {
+    event.preventDefault();
 
-  const isValid = pristine.validate();
+    const isValid = pristine.validate();
 
-  if (isValid) {
-    pristine.reset();
-    uploadForm.reset();
-  }
-});
+    if (isValid) {
+      pristine.reset();
+      uploadForm.reset();
+    }
+  });
+};
+
+export { setUserFormSubmit };
