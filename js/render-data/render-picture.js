@@ -1,3 +1,5 @@
+import { isEscapeKey } from '../util.js';
+
 const photo = document.querySelector('.big-picture');
 const photoImage = photo.querySelector('.big-picture__img img');
 const photoLikes = photo.querySelector('.likes-count');
@@ -6,6 +8,7 @@ const commentTemplate = document.querySelector('#comment').content.querySelector
 const photoCommentCount = photo.querySelector('.social__comment-count');
 const photoCommentsLoader = photo.querySelector('.social__comments-loader');
 const photoClosure = photo.querySelector('.big-picture__cancel');
+
 const SHOW_COMMENTS_STEP = 5;
 
 /**
@@ -14,6 +17,8 @@ const SHOW_COMMENTS_STEP = 5;
 const openFullPhoto = () => {
   document.body.classList.add('modal-open');
   photo.classList.remove('hidden');
+
+  document.addEventListener('keydown', keydownOnFullPhotoHandler);
 };
 
 /**
@@ -22,6 +27,8 @@ const openFullPhoto = () => {
 const closeFullPhoto = () => {
   document.body.classList.remove('modal-open');
   photo.classList.add('hidden');
+
+  document.removeEventListener('keydown', keydownOnFullPhotoHandler);
 };
 
 /**
@@ -79,10 +86,10 @@ const renderPhoto = ({ url, description, comments, likes }) => {
 };
 
 /**
- * Функция, при клике на миниатюру отрисовывает полную версию фотографии на странице.
- * @param {HTMLElement} thumbnail - элемент фотографии в виде разметки.
+ * Функция, обработчик при клике на миниатюру отрисовывает полную версию фотографии на странице.
+ * @param {Object} photoData - данные о фотографии.
  */
-const onRenderPhotoHandler = (photoData) => () => {
+const onRenderFullPhotoHandler = (photoData) => () => {
   renderPhoto(photoData);
   openFullPhoto();
 };
@@ -90,21 +97,24 @@ const onRenderPhotoHandler = (photoData) => () => {
 /**
  * Функция, обработчик при закрытие полной фотографии.
  */
-const onClickCloseFullPhoto = () => {
+const onClickCloseFullPhotoHandler = () => {
   closeFullPhoto();
 };
 
-document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape') {
-    document.body.classList.remove('modal-open');
-    photo.classList.add('hidden');
-  }
-});
-
 const addEventListenerPhoto = () => {
-  photoClosure.addEventListener('click', onClickCloseFullPhoto);
+  photoClosure.addEventListener('click', onClickCloseFullPhotoHandler);
 };
 
 addEventListenerPhoto();
 
-export { onRenderPhotoHandler };
+/**
+ * Функция, обработчик при нажатие на клавишу-ESC для закрытия полноразмерной фотографии.
+ * @param {KeyboardEvent} event - Объект события нажатия клавиши клавиатуры.
+ */
+function keydownOnFullPhotoHandler(event) {
+  if (isEscapeKey(event)) {
+    closeFullPhoto();
+  }
+}
+
+export { onRenderFullPhotoHandler };
