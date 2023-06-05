@@ -5,7 +5,9 @@ const photoImage = photo.querySelector('.big-picture__img img');
 const photoLikes = photo.querySelector('.likes-count');
 const photoComments = photo.querySelector('.social__comments');
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
+const photoCommentsItems = photo.querySelector('.social__comments').children;
 const photoCommentCount = photo.querySelector('.social__comment-count');
+const photoCommentTotal = photo.querySelector('.comments-count');
 const photoCommentsLoader = photo.querySelector('.social__comments-loader');
 const photoClosure = photo.querySelector('.big-picture__cancel');
 
@@ -29,6 +31,29 @@ const closeFullPhoto = () => {
   photo.classList.add('hidden');
 
   document.removeEventListener('keydown', keydownOnFullPhotoHandler);
+};
+
+/**
+ * Функция, обновляет вывод информации о загруженных и доступных комментариях к фотографии.
+ * @param {Array} comments - Список комментариев фотографии.
+ */
+const updateCommentsCount = (comments) => {
+  const shownСommentsCount = document.querySelectorAll('.social__comment').length;
+
+  photoCommentTotal.textContent = comments.length;
+  photoCommentCount.innerHTML = `${shownСommentsCount} из <span class="comments-count">${photoCommentTotal.textContent}</span> комментариев`;
+};
+
+/**
+ * Функция, проверяет список комментариев и если загружены все, скрывает кнопку добавления новых.
+ * @param {Array} comments - Список комментариев фотографии.
+ */
+const checkFullComments = (comments) => {
+  if (photoCommentsItems.length === comments.length) {
+    photoCommentsLoader.classList.add('hidden');
+  } else {
+    photoCommentsLoader.classList.remove('hidden');
+  }
 };
 
 /**
@@ -62,6 +87,9 @@ const renderComments = (comments) => () => {
 
     photoComments.append(createComment(comment));
   }
+
+  updateCommentsCount(comments);
+  checkFullComments(comments);
 };
 
 /**
@@ -73,9 +101,6 @@ const renderComments = (comments) => () => {
  * @param {number} photoData.likes - количество лайков фотографии.
  */
 const renderPhoto = ({ url, description, comments, likes }) => {
-  photoCommentCount.classList.add('hidden');
-  photoCommentsLoader.classList.add('hidden');
-
   photoImage.src = url;
   photoImage.alt = description;
   photoLikes.textContent = likes;
@@ -83,6 +108,8 @@ const renderPhoto = ({ url, description, comments, likes }) => {
 
   const renderFirstComments = renderComments(comments);
   renderFirstComments();
+
+  photoCommentsLoader.addEventListener('click', renderComments(comments));
 };
 
 /**
