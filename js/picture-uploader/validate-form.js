@@ -11,43 +11,56 @@ const HastagsRules = {
   MAX_LENGTH: 20
 };
 
+const HastagsPatterns = {
+  FITST_SIGN: new RegExp(/^#/, 'i'),
+  BODY: new RegExp(`^#[a-zа-яё0-9]{${HastagsRules.MIN_LENGTH},${HastagsRules.MAX_LENGTH}}$`, 'i')
+};
+
 /**
  * Инициализация pristine.
  */
-const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorClass: 'img-upload__field-wrapper--invalid',
-  successClass: 'img-upload__field-wrapper--valid',
-  errorTextParent: 'img-upload__field-wrapper'
-});
+const pristine = new Pristine(
+  uploadForm,
+  {
+    classTo: 'img-upload__field-wrapper',
+    errorClass: 'img-upload__field-wrapper--invalid',
+    successClass: 'img-upload__field-wrapper--valid', // Класс, обозначающий валидное поле
+    errorTextParent: 'img-upload__field-wrapper', // Элемент, куда будет выводиться текст с ошибкой
+    errorTextTag: 'div', // Тег, который будет обрамлять текст ошибки
+    errorTextClass: 'input-error' // Класс для элемента с текстом ошибки
+  }
+);
 
 /**
- * Функция, валидирует введенные хэштеги.
- * @param {string} value - Данные из поля ввода хэштегов, в виде строки.
+ * Функция, валидирует введенные хэштеги на соотвествие первого символа.
+ * @param {string} hashtags - Данные из поля ввода хэштегов, в виде строки.
  * @returns {boolean} true или false в завимости от пройденной валидации.
  */
-const validateHashtags = (value) => {
-  // Так как это поле необязательное, в слуаче если поле пустое, пропускает валидацию.
-  if (!value) {
-    return true;
-  }
+const validateHashtagFirstSign = (hashtags) => hashtags.split(' ').every((hashtag) => HastagsPatterns.FITST_SIGN.test(hashtag));
 
-  const hashtags = value.split(' ');
-  const hashtagPattern = new RegExp(`^#[a-zа-яё0-9]{${HastagsRules.MIN_LENGTH},${HastagsRules.MAX_LENGTH}}$`, 'i');
+/**
+ * Функция, валидирует введенные хэштеги на соотвествие общего паттерна.
+ * @param {string} hashtags - Данные из поля ввода хэштегов, в виде строки.
+ * @returns {boolean} true или false в завимости от пройденной валидации.
+ */
+const validateHashtagPattern = (hashtags) => hashtags.split(' ').every((hashtag) => HastagsPatterns.BODY.test(hashtag));
 
-  // Проверяет каждый введенный хэштег на соотвествие с регулярным выражением.
-  const validHastags = hashtags.every((hashtag) => hashtagPattern.test(hashtag));
-
-  // Проверяет массив хэштегов на дубликаты.
-  const hasDuplicates = new Set(hashtags).size !== hashtags.length;
-
-  // Если есть дубликаты, или хэштегов больше, чем разрешенное количество, возращаем false.
-  if (hasDuplicates || hashtags.length > HastagsRules.MAX_HASHTAGS) {
-    return false;
-  }
-
-  return validHastags;
+/**
+ * Функция, валидирует введенные хэштеги на наличие дубликатов, включая разные регистры.
+ * @param {string} hashtags - Данные из поля ввода хэштегов, в виде строки.
+ * @returns {boolean} true если дубликатов нет, false если дубликаты есть.
+ */
+const validateHashtagDuplicates = (hashtags) => {
+  const lowerCaseHashtags = hashtags.split(' ').map((hashtag) => hashtag.toLowerCase());
+  return new Set(lowerCaseHashtags).size === lowerCaseHashtags.length;
 };
+
+/**
+ * Функция, валидирует
+ * @param {string} hashtags - Данные из поля ввода хэштегов, в виде строки.
+ * @returns
+ */
+const validateHashtagsLength = (hashtags) => hashtags.split(' ').length <= HastagsRules.MAX_HASHTAGS;
 
 /**
  * Функция, валидирует введенный комментарий.
@@ -57,30 +70,50 @@ const validateHashtags = (value) => {
 const validateDescription = (value) => value.length >= DescriptionRules.MIN_LENGTH && value.length <= DescriptionRules.MAX_LENGTH;
 
 /**
+ * Добавление валидаторов для поля хештегов.
+ */
+pristine.addValidator(
+  uploadForm.querySelector('[name="hashtags"]'),
+  validateHashtagFirstSign,
+  'Хэштег должен начинаться с #'
+);
+
+pristine.addValidator(
+  uploadForm.querySelector('[name="hashtags"]'),
+  validateHashtagPattern,
+  `Хэштег должен быть без спец-символов и не длиннее ${HastagsRules.MAX_LENGTH} символов`
+);
+
+pristine.addValidator(
+  uploadForm.querySelector('[name="hashtags"]'),
+  validateHashtagsLength,
+  `Хештегов должно быть не больше ${HastagsRules.MAX_HASHTAGS}`
+);
+
+pristine.addValidator(
+  uploadForm.querySelector('[name="hashtags"]'),
+  validateHashtagDuplicates,
+  'Хештеги не должны повторяться'
+);
+
+/**
  * Добаление валидатора для поля описания.
  */
 pristine.addValidator(
   uploadForm.querySelector('[name="description"]'),
-  validateDescription
-);
-
-/**
- * Добаление валидатора для поля хэштегов.
- */
-pristine.addValidator(
-  uploadForm.querySelector('[name="hashtags"]'),
-  validateHashtags
+  validateDescription,
+  `Комментарий должен содержать от ${DescriptionRules.MIN_LENGTH} до ${DescriptionRules.MAX_LENGTH}`
 );
 
 const setUserFormSubmit = () => {
   uploadForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-
     const isValid = pristine.validate();
 
     if (isValid) {
       pristine.reset();
       uploadForm.reset();
+    } else {
+      event.preventDefault();
     }
   });
 };
