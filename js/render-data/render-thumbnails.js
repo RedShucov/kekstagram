@@ -1,4 +1,4 @@
-import { onRenderPhotoHandler } from './render-picture.js';
+import { onRenderFullPhotoHandler } from './render-picture.js';
 
 const usersPhotoList = document.querySelector('.pictures');
 const templatePicture = document.querySelector('#picture').content.querySelector('.picture');
@@ -10,37 +10,30 @@ const templatePicture = document.querySelector('#picture').content.querySelector
  * @param {string} photoData.description - Описание фотокарточки.
  * @param {Array} photoData.comments - Список комментариев под к фотокарточке.
  * @param {number} photoData.likes - Количесвто лайков фотокарточки.
- * @returns {HTMLElement} элемент миниатюры.
  */
 const createThumbnail = (photoData) => {
+  /**
+   * @param {HTMLElement} thumbnail - элемент миниатюры.
+   */
   const thumbnail = templatePicture.cloneNode(true);
-  const { id, url, description, comments, likes } = photoData;
+  const { url, description, comments, likes } = photoData;
 
-  thumbnail.dataset.photoId = id;
   thumbnail.querySelector('.picture__img').src = url;
   thumbnail.querySelector('.picture__img').alt = description;
   thumbnail.querySelector('.picture__comments').textContent = comments.length;
   thumbnail.querySelector('.picture__likes').textContent = likes;
 
-  thumbnail.addEventListener('click', onRenderPhotoHandler(photoData));
+  thumbnail.addEventListener('click', onRenderFullPhotoHandler(photoData));
 
-  return thumbnail;
+  usersPhotoList.append(thumbnail);
 };
 
 /**
- * Функция, создаёт массив HTML-элементов на основе массива данных о них.
- * @param {Array} photosData - массив данных о фотокарточках.
- * @returns {Array} массив элементов миниатюр.
- */
-const createThumbnails = (photosData) => photosData.map((thumbnail) => createThumbnail(thumbnail));
-
-/**
  * Функция, отрисовывает миниатюры фотографий на странице.
+ * @param {Array} photosData
  */
 const renderThumbnails = (photosData) => {
-  const thumbnails = createThumbnails(photosData);
-
-  thumbnails.forEach((thumbnail) => usersPhotoList.append(thumbnail));
+  photosData.forEach((photoData) => createThumbnail(photoData));
 };
 
 export { renderThumbnails };

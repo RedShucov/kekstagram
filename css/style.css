@@ -708,8 +708,18 @@ main {
   color: #000000;
 
   border-radius: 5px;
+  resize: none;
 }
 
+/**
+ * Стили для валидированных полей формы.
+ */
+
+ .img-upload__field-wrapper--invalid .text__hashtags,
+ .img-upload__field-wrapper--invalid .text__description {
+   border-color: #dc143c;
+   outline: #dc143c;
+ }
 
 /**
  * Кнопка для отправки изображения

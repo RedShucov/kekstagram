@@ -1,29 +1,59 @@
-const siteBody = document.body;
+import { isEscapeKey } from '../util.js';
+
 const photo = document.querySelector('.big-picture');
-const photoComments = photo.querySelector('.social__comments');
-const photoCommentCount = photo.querySelector('.social__comment-count');
-const photoСurrentComment = photo.querySelector('.comments-current');
-const photoTotalComment = photo.querySelector('.comments-total');
-const photoCommentsLoader = photo.querySelector('.social__comments-loader');
 const photoImage = photo.querySelector('.big-picture__img img');
 const photoLikes = photo.querySelector('.likes-count');
-
+const photoComments = photo.querySelector('.social__comments');
+const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
+const photoCommentsItems = photo.querySelector('.social__comments').children;
+const photoCommentCount = photo.querySelector('.social__comment-count');
+const photoCommentTotal = photo.querySelector('.comments-count');
+const photoCommentsLoader = photo.querySelector('.social__comments-loader');
 const photoClosure = photo.querySelector('.big-picture__cancel');
+
+const SHOW_COMMENTS_STEP = 5;
 
 /**
  * Функция, для открытия полноценного изображения.
  */
 const openFullPhoto = () => {
-  siteBody.classList.add('modal-open');
+  document.body.classList.add('modal-open');
   photo.classList.remove('hidden');
+
+  document.addEventListener('keydown', keydownOnFullPhotoHandler);
 };
 
 /**
  * Функция, для закрытия полноценного изображения.
  */
 const closeFullPhoto = () => {
-  siteBody.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
   photo.classList.add('hidden');
+
+  document.removeEventListener('keydown', keydownOnFullPhotoHandler);
+};
+
+/**
+ * Функция, обновляет вывод информации о загруженных и доступных комментариях к фотографии.
+ * @param {Array} comments - Список комментариев фотографии.
+ */
+const updateCommentsCount = (comments) => {
+  const shownСommentsCount = document.querySelectorAll('.social__comment').length;
+
+  photoCommentTotal.textContent = comments.length;
+  photoCommentCount.innerHTML = `${shownСommentsCount} из <span class="comments-count">${photoCommentTotal.textContent}</span> комментариев`;
+};
+
+/**
+ * Функция, проверяет список комментариев и если загружены все, скрывает кнопку добавления новых.
+ * @param {Array} comments - Список комментариев фотографии.
+ */
+const checkFullComments = (comments) => {
+  if (photoCommentsItems.length === comments.length) {
+    photoCommentsLoader.classList.add('hidden');
+  } else {
+    photoCommentsLoader.classList.remove('hidden');
+  }
 };
 
 /**
@@ -34,33 +64,32 @@ const closeFullPhoto = () => {
  * @param {string} comment.message - текст комментария.
  * @returns {string} - строка с HTML-кодом комментария.
  */
-const createComment = ({ avatar, name, message }) => (
-  `<li class="social__comment">
-    <img
-        class="social__picture"
-        src="${avatar}"
-        alt="${name}"
-        width="35" height="35">
-    <p class="social__text">${message}</p>
-  </li>`
-);
+const createComment = ({ avatar, message, name }) => {
+  const comment = commentTemplate.cloneNode(true);
+
+  comment.querySelector('.social__picture').src = avatar;
+  comment.querySelector('.social__picture').alt = name;
+  comment.querySelector('.social__text').textContent = message;
+
+  return comment;
+};
 
 /**
  * Функция, отрисовывает комментарии к фотографии.
  * @param {Array} photoData.comments - массив комментариев к фотографии.
  */
 const renderComments = (comments) => () => {
-  let shownСommentsCount = photoСurrentComment.textContent;
-
-  const toShowCount = Math.min(shownСommentsCount + 5, comments.length);
+  const shownСommentsCount = document.querySelectorAll('.social__comment').length;
+  const toShowCount = Math.min(shownСommentsCount + SHOW_COMMENTS_STEP, comments.length);
 
   for (let i = shownСommentsCount; i < toShowCount; i++) {
     const comment = comments[i];
-    photoComments.insertAdjacentHTML('beforeend', createComment(comment));
-    photoСurrentComment.textContent = i + 1;
+
+    photoComments.append(createComment(comment));
   }
 
-  shownСommentsCount = toShowCount;
+  updateCommentsCount(comments);
+  checkFullComments(comments);
 };
 
 /**
@@ -72,25 +101,22 @@ const renderComments = (comments) => () => {
  * @param {number} photoData.likes - количество лайков фотографии.
  */
 const renderPhoto = ({ url, description, comments, likes }) => {
-  photoCommentCount.classList.add('hidden');
-  photoCommentsLoader.classList.add('hidden');
-
   photoImage.src = url;
   photoImage.alt = description;
   photoLikes.textContent = likes;
-  photoTotalComment.textContent = comments.length;
   photoComments.innerHTML = '';
-  photoСurrentComment.textContent = 0;
 
   const renderFirstComments = renderComments(comments);
   renderFirstComments();
+
+  photoCommentsLoader.addEventListener('click', renderComments(comments));
 };
 
 /**
- * Функция, при клике на миниатюру отрисовывает полную версию фотографии на странице.
- * @param {HTMLElement} thumbnail - элемент фотографии в виде разметки.
+ * Функция, обработчик при клике на миниатюру отрисовывает полную версию фотографии на странице.
+ * @param {Object} photoData - данные о фотографии.
  */
-const onRenderPhotoHandler = (photoData) => () => {
+const onRenderFullPhotoHandler = (photoData) => () => {
   renderPhoto(photoData);
   openFullPhoto();
 };
@@ -98,21 +124,24 @@ const onRenderPhotoHandler = (photoData) => () => {
 /**
  * Функция, обработчик при закрытие полной фотографии.
  */
-const onClickCloseFullPhoto = () => {
+const onClickCloseFullPhotoHandler = () => {
   closeFullPhoto();
 };
 
-document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape') {
-    siteBody.classList.remove('modal-open');
-    photo.classList.add('hidden');
-  }
-});
-
 const addEventListenerPhoto = () => {
-  photoClosure.addEventListener('click', onClickCloseFullPhoto);
+  photoClosure.addEventListener('click', onClickCloseFullPhotoHandler);
 };
 
 addEventListenerPhoto();
 
-export { onRenderPhotoHandler };
+/**
+ * Функция, обработчик при нажатие на клавишу-ESC для закрытия полноразмерной фотографии.
+ * @param {KeyboardEvent} event - Объект события нажатия клавиши клавиатуры.
+ */
+function keydownOnFullPhotoHandler(event) {
+  if (isEscapeKey(event)) {
+    closeFullPhoto();
+  }
+}
+
+export { onRenderFullPhotoHandler };
