@@ -70,9 +70,10 @@ const checkFullComments = (comments) => {
  */
 const createComment = ({ avatar, message, name }) => {
   const comment = commentTemplate.cloneNode(true);
+  const image = comment.querySelector('.social__picture');
 
-  comment.querySelector('.social__picture').src = avatar;
-  comment.querySelector('.social__picture').alt = name;
+  image.src = avatar;
+  image.alt = name;
   comment.querySelector('.social__text').textContent = message;
 
   return comment;
