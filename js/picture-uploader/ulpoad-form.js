@@ -5,46 +5,56 @@ const imageUploadInput = imageUploadForm.querySelector('#upload-file');
 const imageUploadInterface = imageUploadForm.querySelector('.img-upload__overlay');
 const imageUploadClosure = imageUploadForm.querySelector('#upload-cancel');
 
+/**
+ * Функция для открытия интерфейса загрузки и редактирования изображения.
+ */
 const openUploadInterface = () => {
   document.body.classList.add('modal-open');
   imageUploadInterface.classList.remove('hidden');
 
-  document.addEventListener('keydown', keydownOnnUploadFormHandler);
+  document.addEventListener('keydown', keydownUploadFormHandler);
 };
 
+/**
+ * Функция для закрытия интерфейса загрузки и редактирования изображения.
+ */
 const closeUploadInterface = () => {
   document.body.classList.remove('modal-open');
   imageUploadInterface.classList.add('hidden');
 
-  document.removeEventListener('keydown', keydownOnnUploadFormHandler);
+  document.removeEventListener('keydown', keydownUploadFormHandler);
 };
-
-function keydownOnnUploadFormHandler(event) {
-  if (isEscapeKey(event) && !isItFocus(event, 'hashtags', 'description')) {
-    closeUploadInterface();
-  }
-}
 
 /**
  * Функция обработчик открытия модального окна.
  */
-const onOpenModalHandler = () => {
+const openModalHandler = () => {
   openUploadInterface();
 };
 
 /**
  * Функция обработчик закрытия модального окна.
  */
-const onCloseModalHandler = () => {
+const closeModalHandler = () => {
   closeUploadInterface();
 };
+
+/**
+ * Функция, обработчик для закрытия интрефейса добавления новой фотографии при нажатие на клавишу-ESC.
+ * @param {KeyboardEvent} event - Объект события нажатия клавиши клавиатуры.
+ */
+function keydownUploadFormHandler(event) {
+  if (isEscapeKey(event) && !isItFocus(event, 'hashtags', 'description')) {
+    closeUploadInterface();
+  }
+}
 
 /**
  * Инициализация обработчиков для модального окна.
  */
 const addModalHandlers = () => {
-  imageUploadInput.addEventListener('change', onOpenModalHandler);
-  imageUploadClosure.addEventListener('click', onCloseModalHandler);
+  imageUploadInput.addEventListener('change', openModalHandler);
+  imageUploadClosure.addEventListener('click', closeModalHandler);
 };
 
 export { addModalHandlers };

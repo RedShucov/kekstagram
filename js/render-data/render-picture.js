@@ -20,7 +20,7 @@ const openFullPhoto = () => {
   document.body.classList.add('modal-open');
   photo.classList.remove('hidden');
 
-  document.addEventListener('keydown', keydownOnFullPhotoHandler);
+  document.addEventListener('keydown', keydownFullPhotoHandler);
 };
 
 /**
@@ -30,7 +30,7 @@ const closeFullPhoto = () => {
   document.body.classList.remove('modal-open');
   photo.classList.add('hidden');
 
-  document.removeEventListener('keydown', keydownOnFullPhotoHandler);
+  document.removeEventListener('keydown', keydownFullPhotoHandler);
 };
 
 /**
@@ -76,7 +76,7 @@ const createComment = ({ avatar, message, name }) => {
 
 /**
  * Функция, отрисовывает комментарии к фотографии.
- * @param {Array} photoData.comments - массив комментариев к фотографии.
+ * @param {Array} comments - массив комментариев к фотографии.
  */
 const renderComments = (comments) => () => {
   const shownСommentsCount = document.querySelectorAll('.social__comment').length;
@@ -116,7 +116,7 @@ const renderPhoto = ({ url, description, comments, likes }) => {
  * Функция, обработчик при клике на миниатюру отрисовывает полную версию фотографии на странице.
  * @param {Object} photoData - данные о фотографии.
  */
-const onRenderFullPhotoHandler = (photoData) => () => {
+const renderFullPhotoHandler = (photoData) => () => {
   renderPhoto(photoData);
   openFullPhoto();
 };
@@ -124,24 +124,27 @@ const onRenderFullPhotoHandler = (photoData) => () => {
 /**
  * Функция, обработчик при закрытие полной фотографии.
  */
-const onClickCloseFullPhotoHandler = () => {
+const clickCloseFullPhotoHandler = () => {
   closeFullPhoto();
 };
 
+/**
+ * Инициализация обработчика события для кнопки закрытия полноразмерной фотографии.
+ */
 const addEventListenerPhoto = () => {
-  photoClosure.addEventListener('click', onClickCloseFullPhotoHandler);
+  photoClosure.addEventListener('click', clickCloseFullPhotoHandler);
 };
 
 addEventListenerPhoto();
 
 /**
- * Функция, обработчик при нажатие на клавишу-ESC для закрытия полноразмерной фотографии.
+ * Функция, обработчик для закрытия полноразмерной фотографии при нажатие на клавишу-ESC.
  * @param {KeyboardEvent} event - Объект события нажатия клавиши клавиатуры.
  */
-function keydownOnFullPhotoHandler(event) {
+function keydownFullPhotoHandler(event) {
   if (isEscapeKey(event)) {
     closeFullPhoto();
   }
 }
 
-export { onRenderFullPhotoHandler };
+export { renderFullPhotoHandler };

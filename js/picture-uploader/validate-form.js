@@ -24,10 +24,10 @@ const pristine = new Pristine(
   {
     classTo: 'img-upload__field-wrapper',
     errorClass: 'img-upload__field-wrapper--invalid',
-    successClass: 'img-upload__field-wrapper--valid', // Класс, обозначающий валидное поле
-    errorTextParent: 'img-upload__field-wrapper', // Элемент, куда будет выводиться текст с ошибкой
-    errorTextTag: 'div', // Тег, который будет обрамлять текст ошибки
-    errorTextClass: 'input-error' // Класс для элемента с текстом ошибки
+    successClass: 'img-upload__field-wrapper--valid',
+    errorTextParent: 'img-upload__field-wrapper',
+    errorTextTag: 'div',
+    errorTextClass: 'input-error'
   }
 );
 
@@ -105,7 +105,10 @@ pristine.addValidator(
   `Комментарий должен содержать от ${DescriptionRules.MIN_LENGTH} до ${DescriptionRules.MAX_LENGTH}`
 );
 
-const setUserFormSubmit = () => {
+/**
+ * Инициализация обработчика события для формы отправки нового изображения.
+ */
+const addUserFormSubmitHandler = () => {
   uploadForm.addEventListener('submit', (event) => {
     const isValid = pristine.validate();
 
@@ -118,4 +121,4 @@ const setUserFormSubmit = () => {
   });
 };
 
-export { setUserFormSubmit };
+export { addUserFormSubmitHandler };
