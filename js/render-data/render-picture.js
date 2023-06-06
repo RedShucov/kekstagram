@@ -13,6 +13,8 @@ const photoClosure = photo.querySelector('.big-picture__cancel');
 
 const SHOW_COMMENTS_STEP = 5;
 
+let correntCommentsHandler;
+
 /**
  * Функция, для открытия полноценного изображения.
  */
@@ -31,6 +33,8 @@ const closeFullPhoto = () => {
   photo.classList.add('hidden');
 
   document.removeEventListener('keydown', keydownFullPhotoHandler);
+
+  photoCommentsLoader.removeEventListener('click', correntCommentsHandler);
 };
 
 /**
@@ -116,7 +120,9 @@ const renderPhoto = ({ url, description, comments, likes }) => {
 
   renderComments(comments);
 
-  photoCommentsLoader.addEventListener('click', renderCommentsHandler(comments));
+  correntCommentsHandler = renderCommentsHandler(comments);
+
+  photoCommentsLoader.addEventListener('click', correntCommentsHandler);
 };
 
 /**
