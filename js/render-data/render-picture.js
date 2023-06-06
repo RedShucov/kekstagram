@@ -78,7 +78,7 @@ const createComment = ({ avatar, message, name }) => {
  * Функция, отрисовывает комментарии к фотографии.
  * @param {Array} comments - массив комментариев к фотографии.
  */
-const renderComments = (comments) => () => {
+const renderComments = (comments) => {
   const shownСommentsCount = document.querySelectorAll('.social__comment').length;
   const toShowCount = Math.min(shownСommentsCount + SHOW_COMMENTS_STEP, comments.length);
 
@@ -90,6 +90,14 @@ const renderComments = (comments) => () => {
 
   updateCommentsCount(comments);
   checkFullComments(comments);
+};
+
+/**
+ * Функция, обработчик события отрисовки комментариев.
+ * @param {Array} comments - массив комментариев к фотографии.
+ */
+const renderCommentsHandler = (comments) => () => {
+  renderComments(comments);
 };
 
 /**
@@ -106,10 +114,9 @@ const renderPhoto = ({ url, description, comments, likes }) => {
   photoLikes.textContent = likes;
   photoComments.innerHTML = '';
 
-  const renderFirstComments = renderComments(comments);
-  renderFirstComments();
+  renderComments(comments);
 
-  photoCommentsLoader.addEventListener('click', renderComments(comments));
+  photoCommentsLoader.addEventListener('click', renderCommentsHandler(comments));
 };
 
 /**
