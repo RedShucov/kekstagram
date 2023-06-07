@@ -41,10 +41,10 @@ const closeModalHandler = () => {
 
 /**
  * Функция, обработчик для закрытия интрефейса добавления новой фотографии при нажатие на клавишу-ESC.
- * @param {KeyboardEvent} event - Объект события нажатия клавиши клавиатуры.
+ * @param {KeyboardEvent} evt - Объект события нажатия клавиши клавиатуры.
  */
-function keydownUploadFormHandler(event) {
-  if (isEscapeKey(event) && !isItFocus(event, 'hashtags', 'description')) {
+function keydownUploadFormHandler(evt) {
+  if (isEscapeKey(evt) && !isItFocus(evt, 'hashtags', 'description')) {
     closeUploadInterface();
   }
 }

@@ -1,5 +1,7 @@
 import { isEscapeKey } from '../util.js';
 
+const SHOW_COMMENTS_STEP = 5;
+
 const photo = document.querySelector('.big-picture');
 const photoImage = photo.querySelector('.big-picture__img img');
 const photoLikes = photo.querySelector('.likes-count');
@@ -10,8 +12,6 @@ const photoCommentCount = photo.querySelector('.social__comment-count');
 const photoCommentTotal = photo.querySelector('.comments-count');
 const photoCommentsLoader = photo.querySelector('.social__comments-loader');
 const photoClosure = photo.querySelector('.big-picture__cancel');
-
-const SHOW_COMMENTS_STEP = 5;
 
 let correntCommentsHandler;
 
@@ -153,10 +153,10 @@ addEventListenerPhoto();
 
 /**
  * Функция, обработчик для закрытия полноразмерной фотографии при нажатие на клавишу-ESC.
- * @param {KeyboardEvent} event - Объект события нажатия клавиши клавиатуры.
+ * @param {KeyboardEvent} evt - Объект события нажатия клавиши клавиатуры.
  */
-function keydownFullPhotoHandler(event) {
-  if (isEscapeKey(event)) {
+function keydownFullPhotoHandler(evt) {
+  if (isEscapeKey(evt)) {
     closeFullPhoto();
   }
 }

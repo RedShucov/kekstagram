@@ -12,7 +12,7 @@ const HastagsRules = {
 };
 
 const HastagsPatterns = {
-  FITST_SIGN: new RegExp(/^#/, 'i'),
+  FITST_SIGN: /^#/i,
   BODY: new RegExp(`^#[a-zа-яё0-9]{${HastagsRules.MIN_LENGTH},${HastagsRules.MAX_LENGTH}}$`, 'i')
 };
 
@@ -75,7 +75,7 @@ const validateDescription = (value) => value.length >= DescriptionRules.MIN_LENG
 pristine.addValidator(
   uploadForm.querySelector('[name="hashtags"]'),
   validateHashtagFirstSign,
-  'Хэштег должен начинаться с #'
+  `Хэштег должен начинаться с ${HastagsRules.FITST_SIGN}`
 );
 
 pristine.addValidator(
@@ -109,14 +109,14 @@ pristine.addValidator(
  * Инициализация обработчика события для формы отправки нового изображения.
  */
 const addUserFormSubmitHandler = () => {
-  uploadForm.addEventListener('submit', (event) => {
+  uploadForm.addEventListener('submit', (evt) => {
     const isValid = pristine.validate();
 
     if (isValid) {
       pristine.reset();
       uploadForm.reset();
     } else {
-      event.preventDefault();
+      evt.preventDefault();
     }
   });
 };
