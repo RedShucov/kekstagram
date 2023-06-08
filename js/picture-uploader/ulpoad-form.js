@@ -1,4 +1,5 @@
 import { isEscapeKey, isItFocus } from '../util.js';
+import { addPreviewScaleHandlers, removePreviewScaleHandlers } from './image-scale.js';
 
 const imageUploadForm = document.querySelector('#upload-select-image');
 const imageUploadInput = imageUploadForm.querySelector('#upload-file');
@@ -12,7 +13,10 @@ const openUploadInterface = () => {
   document.body.classList.add('modal-open');
   imageUploadInterface.classList.remove('hidden');
 
-  document.addEventListener('keydown', keydownUploadFormHandler);
+  addPreviewScaleHandlers();
+
+  imageUploadClosure.addEventListener('click', closeModalHandler);
+  document.removeEventListener('keydown', keydownUploadFormHandler);
 };
 
 /**
@@ -22,6 +26,9 @@ const closeUploadInterface = () => {
   document.body.classList.remove('modal-open');
   imageUploadInterface.classList.add('hidden');
 
+  removePreviewScaleHandlers();
+
+  imageUploadClosure.removeEventListener('click', closeModalHandler);
   document.removeEventListener('keydown', keydownUploadFormHandler);
 };
 
@@ -35,9 +42,9 @@ const openModalHandler = () => {
 /**
  * Функция обработчик закрытия модального окна.
  */
-const closeModalHandler = () => {
+function closeModalHandler() {
   closeUploadInterface();
-};
+}
 
 /**
  * Функция, обработчик для закрытия интрефейса добавления новой фотографии при нажатие на клавишу-ESC.
@@ -54,7 +61,7 @@ function keydownUploadFormHandler(evt) {
  */
 const addModalHandlers = () => {
   imageUploadInput.addEventListener('change', openModalHandler);
-  imageUploadClosure.addEventListener('click', closeModalHandler);
+  // imageUploadClosure.addEventListener('click', closeModalHandler);
 };
 
 export { addModalHandlers };
