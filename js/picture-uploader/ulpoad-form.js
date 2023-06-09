@@ -61,7 +61,6 @@ function keydownUploadFormHandler(evt) {
  */
 const addModalHandlers = () => {
   imageUploadInput.addEventListener('change', openModalHandler);
-  // imageUploadClosure.addEventListener('click', closeModalHandler);
 };
 
 export { addModalHandlers };

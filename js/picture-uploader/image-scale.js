@@ -11,6 +11,9 @@ const ScaleSettings = {
   SCALE_STEP: 25
 };
 
+/**
+ * Функция, для уменьшения мастштаба изображения.
+ */
 const decreasePreviewScale = () => {
   let scaleValue = parseInt(inputScaleValue.value, 10);
 
@@ -23,6 +26,9 @@ const decreasePreviewScale = () => {
   }
 };
 
+/**
+ * Функция, для увелечения мастштаба изображения.
+ */
 const increasePreviewScale = () => {
   let scaleValue = parseInt(inputScaleValue.value, 10);
 
@@ -35,20 +41,32 @@ const increasePreviewScale = () => {
   }
 };
 
+/**
+ * Функция, обработчик для уменьшения масштаба изображения.
+ */
 const decreasePreviewScaleHandler = () => {
   decreasePreviewScale();
 };
 
+/**
+ * Функция, обработчик для увелечения мастштаба изображения.
+ */
 const increasePreviewScaleHandler = () => {
   increasePreviewScale();
 };
 
+/**
+ * Инициализация обработчиков для изменения мастштаба изображения.
+ */
 const addPreviewScaleHandlers = () => {
   buttonDecreaseScale.addEventListener('click', decreasePreviewScaleHandler);
 
   buttonIncreaseScale.addEventListener('click', increasePreviewScaleHandler);
 };
 
+/**
+ * Удаление обработчиков для изменения мастштаба изображения.
+ */
 const removePreviewScaleHandlers = () => {
   buttonDecreaseScale.removeEventListener('click', decreasePreviewScaleHandler);
 
