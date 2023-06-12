@@ -13,4 +13,22 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
  */
 const isItFocus = (evt, ...names) => names.some((name) => evt.target.name === name);
 
-export { isEscapeKey, isItFocus };
+/**
+ * Функция, отоброжает модальный элемент интерфейса.
+ * @param {HTMLElement} element
+ */
+const showModal = (element) => {
+  document.body.classList.add('modal-open');
+  element.classList.remove('hidden');
+};
+
+/**
+ * Функция, скрывает модальный элемент интерфейса.
+ * @param {HTMLElement} element
+ */
+const hideModal = (element) => {
+  document.body.classList.remove('modal-open');
+  element.classList.add('hidden');
+};
+
+export { isEscapeKey, isItFocus, showModal, hideModal };

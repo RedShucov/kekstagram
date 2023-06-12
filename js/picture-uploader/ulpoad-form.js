@@ -1,4 +1,4 @@
-import { isEscapeKey, isItFocus } from '../util.js';
+import { isEscapeKey, isItFocus, showModal, hideModal } from '../util.js';
 import { addPreviewScaleHandlers, removePreviewScaleHandlers } from './image-scale.js';
 import { initializeEffectsSettings, deinitializeEffectsSettings } from './image-effects.js';
 
@@ -11,28 +11,30 @@ const imageUploadClosure = imageUploadForm.querySelector('#upload-cancel');
  * Функция для открытия интерфейса загрузки и редактирования изображения.
  */
 const openUploadInterface = () => {
-  document.body.classList.add('modal-open');
-  imageUploadInterface.classList.remove('hidden');
+  showModal(imageUploadInterface);
 
   addPreviewScaleHandlers();
   initializeEffectsSettings();
 
+  // Объединить в функцию
   imageUploadClosure.addEventListener('click', closeModalHandler);
   document.removeEventListener('keydown', keydownUploadFormHandler);
+  // Объединить в функцию
 };
 
 /**
  * Функция для закрытия интерфейса загрузки и редактирования изображения.
  */
 const closeUploadInterface = () => {
-  document.body.classList.remove('modal-open');
-  imageUploadInterface.classList.add('hidden');
+  hideModal(imageUploadInterface);
 
   removePreviewScaleHandlers();
   deinitializeEffectsSettings();
 
+  // Объединить в функцию
   imageUploadClosure.removeEventListener('click', closeModalHandler);
   document.removeEventListener('keydown', keydownUploadFormHandler);
+  // Объединить в функцию
 };
 
 /**

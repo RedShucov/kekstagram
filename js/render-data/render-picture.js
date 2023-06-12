@@ -1,4 +1,4 @@
-import { isEscapeKey } from '../util.js';
+import { isEscapeKey, showModal, hideModal } from '../util.js';
 
 const SHOW_COMMENTS_STEP = 5;
 
@@ -19,8 +19,7 @@ let correntCommentsHandler;
  * Функция, для открытия полноценного изображения.
  */
 const openFullPhoto = () => {
-  document.body.classList.add('modal-open');
-  photo.classList.remove('hidden');
+  showModal(photo);
 
   document.addEventListener('keydown', keydownFullPhotoHandler);
 };
@@ -29,8 +28,7 @@ const openFullPhoto = () => {
  * Функция, для закрытия полноценного изображения.
  */
 const closeFullPhoto = () => {
-  document.body.classList.remove('modal-open');
-  photo.classList.add('hidden');
+  hideModal(photo);
 
   document.removeEventListener('keydown', keydownFullPhotoHandler);
 
