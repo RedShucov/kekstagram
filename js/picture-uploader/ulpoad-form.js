@@ -1,5 +1,6 @@
 import { isEscapeKey, isItFocus } from '../util.js';
 import { addPreviewScaleHandlers, removePreviewScaleHandlers } from './image-scale.js';
+import { initializeEffectsSettings, deinitializeEffectsSettings } from './image-effects.js';
 
 const imageUploadForm = document.querySelector('#upload-select-image');
 const imageUploadInput = imageUploadForm.querySelector('#upload-file');
@@ -14,6 +15,7 @@ const openUploadInterface = () => {
   imageUploadInterface.classList.remove('hidden');
 
   addPreviewScaleHandlers();
+  initializeEffectsSettings();
 
   imageUploadClosure.addEventListener('click', closeModalHandler);
   document.removeEventListener('keydown', keydownUploadFormHandler);
@@ -27,6 +29,7 @@ const closeUploadInterface = () => {
   imageUploadInterface.classList.add('hidden');
 
   removePreviewScaleHandlers();
+  deinitializeEffectsSettings();
 
   imageUploadClosure.removeEventListener('click', closeModalHandler);
   document.removeEventListener('keydown', keydownUploadFormHandler);
