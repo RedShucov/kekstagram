@@ -138,9 +138,7 @@ const updateSlider = () => {
 /**
  * Функция, обработчик изменения значения слайдера.
  */
-const updateSliderHandler = () => {
-  updateSlider();
-};
+const updateSliderHandler = () => updateSlider();
 
 /**
  * Функция, создаёт слайдер и передает ему стартовые настройки стандартного эффекта.
@@ -157,9 +155,7 @@ const createSlider = (effect) => {
 /**
  * Функция, удаляет слайдер после закрытия модального окна.
  */
-const destroySlider = () => {
-  effectSlider.noUiSlider.destroy();
-};
+const destroySlider = () => effectSlider.noUiSlider.destroy();
 
 /**
  * Функция, меняет найстроки слайдера.
@@ -184,16 +180,12 @@ const changeEffectHandler = () => {
 /**
  * Инициализация обработчиков для приминения эффекта к изображению.
  */
-const addChangeEffectHandler = () => {
-  effectsList.addEventListener('change', changeEffectHandler);
-};
+const addChangeEffectHandler = () => effectsList.addEventListener('change', changeEffectHandler);
 
 /**
  * Удаление обработчиков для применения эффекта к изображени/.
  */
-const removeChangeEffectHadnler = () => {
-  effectsList.removeEventListener('change', changeEffectHandler);
-};
+const removeChangeEffectHadnler = () => effectsList.removeEventListener('change', changeEffectHandler);
 
 /**
  * Инициализация настроек эффектов.
