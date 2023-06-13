@@ -60,7 +60,6 @@ const increasePreviewScaleHandler = () => {
  */
 const addPreviewScaleHandlers = () => {
   buttonDecreaseScale.addEventListener('click', decreasePreviewScaleHandler);
-
   buttonIncreaseScale.addEventListener('click', increasePreviewScaleHandler);
 };
 
@@ -69,7 +68,6 @@ const addPreviewScaleHandlers = () => {
  */
 const removePreviewScaleHandlers = () => {
   buttonDecreaseScale.removeEventListener('click', decreasePreviewScaleHandler);
-
   buttonIncreaseScale.removeEventListener('click', increasePreviewScaleHandler);
 };
 

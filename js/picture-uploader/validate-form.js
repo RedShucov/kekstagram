@@ -75,7 +75,7 @@ const validateDescription = (value) => value.length >= DescriptionRules.MIN_LENG
 pristine.addValidator(
   uploadForm.querySelector('[name="hashtags"]'),
   validateHashtagFirstSign,
-  `Хэштег должен начинаться с ${HastagsRules.FITST_SIGN}`
+  'Хэштег должен начинаться с #'
 );
 
 pristine.addValidator(
