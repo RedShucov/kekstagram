@@ -13,15 +13,14 @@ const photoCommentTotal = photo.querySelector('.comments-count');
 const photoCommentsLoader = photo.querySelector('.social__comments-loader');
 const photoClosure = photo.querySelector('.big-picture__cancel');
 
-let correntCommentsHandler;
+let currentCommentsHandler;
 
 /**
  * Функция, для открытия полноценного изображения.
  */
 const openFullPhoto = () => {
   showModal(photo);
-
-  document.addEventListener('keydown', keydownFullPhotoHandler);
+  addFullPhotoHandlers();
 };
 
 /**
@@ -29,10 +28,7 @@ const openFullPhoto = () => {
  */
 const closeFullPhoto = () => {
   hideModal(photo);
-
-  document.removeEventListener('keydown', keydownFullPhotoHandler);
-
-  photoCommentsLoader.removeEventListener('click', correntCommentsHandler);
+  removeFullPhotoHandlers();
 };
 
 /**
@@ -119,9 +115,7 @@ const renderPhoto = ({ url, description, comments, likes }) => {
 
   renderComments(comments);
 
-  correntCommentsHandler = renderCommentsHandler(comments);
-
-  photoCommentsLoader.addEventListener('click', correntCommentsHandler);
+  currentCommentsHandler = renderCommentsHandler(comments);
 };
 
 /**
@@ -141,22 +135,25 @@ const clickCloseFullPhotoHandler = () => {
 };
 
 /**
- * Инициализация обработчика события для кнопки закрытия полноразмерной фотографии.
- */
-const addEventListenerPhoto = () => {
-  photoClosure.addEventListener('click', clickCloseFullPhotoHandler);
-};
-
-addEventListenerPhoto();
-
-/**
  * Функция, обработчик для закрытия полноразмерной фотографии при нажатие на клавишу-ESC.
  * @param {KeyboardEvent} evt - Объект события нажатия клавиши клавиатуры.
  */
-function keydownFullPhotoHandler(evt) {
+const keydownFullPhotoHandler = (evt) => {
   if (isEscapeKey(evt)) {
     closeFullPhoto();
   }
+};
+
+function addFullPhotoHandlers() {
+  photoCommentsLoader.addEventListener('click', currentCommentsHandler);
+  photoClosure.addEventListener('click', clickCloseFullPhotoHandler);
+  document.addEventListener('keydown', keydownFullPhotoHandler);
+}
+
+function removeFullPhotoHandlers() {
+  photoCommentsLoader.removeEventListener('click', currentCommentsHandler);
+  photoClosure.removeEventListener('click', clickCloseFullPhotoHandler);
+  document.removeEventListener('keydown', keydownFullPhotoHandler);
 }
 
 export { renderFullPhotoHandler };
