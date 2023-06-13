@@ -170,11 +170,13 @@ const changeSliderOptions = (effect) => {
 /**
  * Функция, обработчик при применении эффекта к изображению.
  */
-const changeEffectHandler = () => {
-  activeEffect = getCheckedEffect();
+const changeEffectHandler = (evt) => {
+  if (evt.target.matches('input[name="effect"]')) {
+    activeEffect = getCheckedEffect();
 
-  applyEffect(activeEffect);
-  changeSliderOptions(activeEffect);
+    applyEffect(activeEffect);
+    changeSliderOptions(activeEffect);
+  }
 };
 
 /**
