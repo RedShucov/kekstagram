@@ -1,50 +1,77 @@
-import { isEscapeKey, isItFocus } from '../util.js';
+import { isEscapeKey, isItFocus, showModal, hideModal } from '../util.js';
+import { addPreviewScaleHandlers, removePreviewScaleHandlers } from './image-scale.js';
+import { initializeEffectsSettings, deinitializeEffectsSettings } from './image-effects.js';
 
 const imageUploadForm = document.querySelector('#upload-select-image');
 const imageUploadInput = imageUploadForm.querySelector('#upload-file');
 const imageUploadInterface = imageUploadForm.querySelector('.img-upload__overlay');
 const imageUploadClosure = imageUploadForm.querySelector('#upload-cancel');
 
+/**
+ * Функция, для открытия интерфейса загрузки и редактирования изображения.
+ */
 const openUploadInterface = () => {
-  document.body.classList.add('modal-open');
-  imageUploadInterface.classList.remove('hidden');
-
-  document.addEventListener('keydown', keydownOnnUploadFormHandler);
+  showModal(imageUploadInterface);
+  addCloseModalHandlers();
+  addPreviewScaleHandlers();
+  initializeEffectsSettings();
 };
 
+/**
+ * Функция, для закрытия интерфейса загрузки и редактирования изображения.
+ */
 const closeUploadInterface = () => {
-  document.body.classList.remove('modal-open');
-  imageUploadInterface.classList.add('hidden');
-
-  document.removeEventListener('keydown', keydownOnnUploadFormHandler);
+  hideModal(imageUploadInterface);
+  removeCloseModalHandlers();
+  removePreviewScaleHandlers();
+  deinitializeEffectsSettings();
 };
 
-function keydownOnnUploadFormHandler(event) {
-  if (isEscapeKey(event) && !isItFocus(event, 'hashtags', 'description')) {
+/**
+ * Функция, обработчик закрытия модального окна.
+ */
+const closeModalHandler = () => {
+  closeUploadInterface();
+};
+
+/**
+ * Функция, обработчик для закрытия интрефейса добавления новой фотографии при нажатие на клавишу-ESC.
+ * @param {KeyboardEvent} evt - Объект события нажатия клавиши клавиатуры.
+ */
+const keydownUploadFormHandler = (evt) => {
+  if (isEscapeKey(evt) && !isItFocus(evt, 'hashtags', 'description')) {
     closeUploadInterface();
   }
+};
+
+/**
+ * Инициализация обработчиков для закрытия интерфейса добавления новой фотографии.
+ */
+function addCloseModalHandlers() {
+  imageUploadClosure.addEventListener('click', closeModalHandler);
+  document.addEventListener('keydown', keydownUploadFormHandler);
 }
 
 /**
- * Функция обработчик открытия модального окна.
+ * Удаление обработчиков для закрытия интерфейса добавления новой фотографии.
  */
-const onOpenModalHandler = () => {
-  openUploadInterface();
-};
+function removeCloseModalHandlers() {
+  imageUploadClosure.removeEventListener('click', closeModalHandler);
+  document.removeEventListener('keydown', keydownUploadFormHandler);
+}
 
 /**
- * Функция обработчик закрытия модального окна.
+ * Функция, обработчик открытия модального окна.
  */
-const onCloseModalHandler = () => {
-  closeUploadInterface();
+const openModalHandler = () => {
+  openUploadInterface();
 };
 
 /**
  * Инициализация обработчиков для модального окна.
  */
-const addModalHandlers = () => {
-  imageUploadInput.addEventListener('change', onOpenModalHandler);
-  imageUploadClosure.addEventListener('click', onCloseModalHandler);
+const addOpenModalHandlers = () => {
+  imageUploadInput.addEventListener('change', openModalHandler);
 };
 
-export { addModalHandlers };
+export { addOpenModalHandlers };

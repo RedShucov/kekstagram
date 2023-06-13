@@ -1,4 +1,6 @@
-import { isEscapeKey } from '../util.js';
+import { isEscapeKey, showModal, hideModal } from '../util.js';
+
+const SHOW_COMMENTS_STEP = 5;
 
 const photo = document.querySelector('.big-picture');
 const photoImage = photo.querySelector('.big-picture__img img');
@@ -11,26 +13,22 @@ const photoCommentTotal = photo.querySelector('.comments-count');
 const photoCommentsLoader = photo.querySelector('.social__comments-loader');
 const photoClosure = photo.querySelector('.big-picture__cancel');
 
-const SHOW_COMMENTS_STEP = 5;
+let currentCommentsHandler;
 
 /**
  * Функция, для открытия полноценного изображения.
  */
 const openFullPhoto = () => {
-  document.body.classList.add('modal-open');
-  photo.classList.remove('hidden');
-
-  document.addEventListener('keydown', keydownOnFullPhotoHandler);
+  showModal(photo);
+  addFullPhotoHandlers();
 };
 
 /**
  * Функция, для закрытия полноценного изображения.
  */
 const closeFullPhoto = () => {
-  document.body.classList.remove('modal-open');
-  photo.classList.add('hidden');
-
-  document.removeEventListener('keydown', keydownOnFullPhotoHandler);
+  hideModal(photo);
+  removeFullPhotoHandlers();
 };
 
 /**
@@ -66,9 +64,10 @@ const checkFullComments = (comments) => {
  */
 const createComment = ({ avatar, message, name }) => {
   const comment = commentTemplate.cloneNode(true);
+  const image = comment.querySelector('.social__picture');
 
-  comment.querySelector('.social__picture').src = avatar;
-  comment.querySelector('.social__picture').alt = name;
+  image.src = avatar;
+  image.alt = name;
   comment.querySelector('.social__text').textContent = message;
 
   return comment;
@@ -76,9 +75,9 @@ const createComment = ({ avatar, message, name }) => {
 
 /**
  * Функция, отрисовывает комментарии к фотографии.
- * @param {Array} photoData.comments - массив комментариев к фотографии.
+ * @param {Array} comments - массив комментариев к фотографии.
  */
-const renderComments = (comments) => () => {
+const renderComments = (comments) => {
   const shownСommentsCount = document.querySelectorAll('.social__comment').length;
   const toShowCount = Math.min(shownСommentsCount + SHOW_COMMENTS_STEP, comments.length);
 
@@ -90,6 +89,14 @@ const renderComments = (comments) => () => {
 
   updateCommentsCount(comments);
   checkFullComments(comments);
+};
+
+/**
+ * Функция, обработчик события отрисовки комментариев.
+ * @param {Array} comments - массив комментариев к фотографии.
+ */
+const renderCommentsHandler = (comments) => () => {
+  renderComments(comments);
 };
 
 /**
@@ -106,17 +113,16 @@ const renderPhoto = ({ url, description, comments, likes }) => {
   photoLikes.textContent = likes;
   photoComments.innerHTML = '';
 
-  const renderFirstComments = renderComments(comments);
-  renderFirstComments();
+  renderComments(comments);
 
-  photoCommentsLoader.addEventListener('click', renderComments(comments));
+  currentCommentsHandler = renderCommentsHandler(comments);
 };
 
 /**
  * Функция, обработчик при клике на миниатюру отрисовывает полную версию фотографии на странице.
  * @param {Object} photoData - данные о фотографии.
  */
-const onRenderFullPhotoHandler = (photoData) => () => {
+const renderFullPhotoHandler = (photoData) => () => {
   renderPhoto(photoData);
   openFullPhoto();
 };
@@ -124,24 +130,30 @@ const onRenderFullPhotoHandler = (photoData) => () => {
 /**
  * Функция, обработчик при закрытие полной фотографии.
  */
-const onClickCloseFullPhotoHandler = () => {
+const clickCloseFullPhotoHandler = () => {
   closeFullPhoto();
 };
 
-const addEventListenerPhoto = () => {
-  photoClosure.addEventListener('click', onClickCloseFullPhotoHandler);
-};
-
-addEventListenerPhoto();
-
 /**
- * Функция, обработчик при нажатие на клавишу-ESC для закрытия полноразмерной фотографии.
- * @param {KeyboardEvent} event - Объект события нажатия клавиши клавиатуры.
+ * Функция, обработчик для закрытия полноразмерной фотографии при нажатие на клавишу-ESC.
+ * @param {KeyboardEvent} evt - Объект события нажатия клавиши клавиатуры.
  */
-function keydownOnFullPhotoHandler(event) {
-  if (isEscapeKey(event)) {
+const keydownFullPhotoHandler = (evt) => {
+  if (isEscapeKey(evt)) {
     closeFullPhoto();
   }
+};
+
+function addFullPhotoHandlers() {
+  photoCommentsLoader.addEventListener('click', currentCommentsHandler);
+  photoClosure.addEventListener('click', clickCloseFullPhotoHandler);
+  document.addEventListener('keydown', keydownFullPhotoHandler);
 }
 
-export { onRenderFullPhotoHandler };
+function removeFullPhotoHandlers() {
+  photoCommentsLoader.removeEventListener('click', currentCommentsHandler);
+  photoClosure.removeEventListener('click', clickCloseFullPhotoHandler);
+  document.removeEventListener('keydown', keydownFullPhotoHandler);
+}
+
+export { renderFullPhotoHandler };
