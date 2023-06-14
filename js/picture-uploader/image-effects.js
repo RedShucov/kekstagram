@@ -119,8 +119,8 @@ const applyEffect = (effect) => {
  * Функция, выполняется при перетягивание слайдера и изменение его значения, меняет насыщенность эффекта.
  * @param {Object} effect - объект с описанием эффекта.
  */
-const dragSlider = ({ style, unit }) => {
-  const effectValue = effectSlider.noUiSlider.get();
+const dragSlider = (slider, { style, unit }) => {
+  const effectValue = slider.noUiSlider.get();
 
   effectValueInput.value = effectValue;
 
@@ -131,47 +131,47 @@ const dragSlider = ({ style, unit }) => {
  * Функция, обработчик изменения значения слайдера использует замыкание, чтобы задать контекст для dragSlider.
  * @param {Object} effect - объект с описанием эффекта.
  */
-const dragSliderHandler = (effect) => () => dragSlider(effect);
+const dragSliderHandler = (slider, effect) => () => dragSlider(slider, effect);
 
 /**
  * Функция, добавляет новый хэндлер на слайдер.
  * @param {Object} effect - объект с описанием эффекта.
  */
-const addSliderHandler = (effect) => {
-  currentDragSliderHandler = dragSliderHandler(effect);
-  effectSlider.noUiSlider.on('update', currentDragSliderHandler);
+const addSliderHandler = (slider, effect) => {
+  currentDragSliderHandler = dragSliderHandler(slider, effect);
+  slider.noUiSlider.on('update', currentDragSliderHandler);
 };
 
 /**
  * Функция, удаляет текущий хэндлер со слайдера.
  */
-const removeSliderHandler = () => {
-  effectSlider.noUiSlider.off('update', currentDragSliderHandler);
+const removeSliderHandler = (slider) => {
+  slider.noUiSlider.off('update', currentDragSliderHandler);
 };
 
 /**
  * Функция, создаёт слайдер и передает ему стартовые настройки стандартного эффекта.
  * @param {Object} effect - объект с описанием эффекта.
  */
-const createSlider = (effect) => {
+const createSlider = (slider, effect) => {
   const effectOptions = createEffectSliderOptions(effect);
 
-  noUiSlider.create(effectSlider, effectOptions);
+  noUiSlider.create(slider, effectOptions);
 };
 
 /**
  * Функция, удаляет слайдер после закрытия модального окна.
  */
-const destroySlider = () => effectSlider.noUiSlider.destroy();
+const destroySlider = (slider) => slider.noUiSlider.destroy();
 
 /**
  * Функция, меняет найстроки слайдера.
  * @param {Object} effect - объект с описанием эффекта.
  */
-const changeSliderOptions = (effect) => {
+const changeSliderOptions = (slider, effect) => {
   const effectOptions = createEffectSliderOptions(effect);
 
-  effectSlider.noUiSlider.updateOptions(effectOptions);
+  slider.noUiSlider.updateOptions(effectOptions);
 };
 
 /**
@@ -180,9 +180,9 @@ const changeSliderOptions = (effect) => {
  */
 const changeEffect = (effect) => {
   applyEffect(effect);
-  changeSliderOptions(effect);
-  removeSliderHandler();
-  addSliderHandler(effect);
+  changeSliderOptions(effectSlider, effect);
+  removeSliderHandler(effectSlider);
+  addSliderHandler(effectSlider, effect);
 };
 
 /**
@@ -213,8 +213,8 @@ const initializeEffectsSettings = () => {
   const effect = getCheckedEffect();
 
   applyEffect(effect);
-  createSlider(effect);
-  addSliderHandler(effect);
+  createSlider(effectSlider, effect);
+  addSliderHandler(effectSlider, effect);
   addChangeEffectHandler();
 };
 
@@ -222,7 +222,7 @@ const initializeEffectsSettings = () => {
  * Деинициализация настроек эффектов.
  */
 const deinitializeEffectsSettings = () => {
-  destroySlider();
+  destroySlider(effectSlider);
   removeChangeEffectHadnler();
 };
 
