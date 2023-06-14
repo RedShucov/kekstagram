@@ -72,14 +72,14 @@ const getCheckedEffect = () => {
  * Функция, проверяет активный эффект, если это 'оригинал', то слайдер скрывается.
  * @returns {Object} объект с описанием эффекта.
  */
-const checkActiveEffect = (effect) => {
-  if (effect.name === 'none') {
+const checkActiveEffect = ({ name }) => {
+  if (name === 'none') {
     effectSliderContainer.classList.add('hidden');
 
     imagePreview.style.filter = '';
   }
 
-  if (effect.name !== 'none' && effectSliderContainer.classList.contains('hidden')) {
+  if (name !== 'none' && effectSliderContainer.classList.contains('hidden')) {
     effectSliderContainer.classList.remove('hidden');
   }
 };
@@ -88,8 +88,8 @@ const checkActiveEffect = (effect) => {
  * Функция, для добавления на изображения активного класса эффекта.
  * @param {Object} effect - объект с описанием эффекта.
  */
-const addPreviewEffect = (effect) => {
-  const activeClass = `effects__preview--${effect.name}`;
+const addPreviewEffect = ({ name }) => {
+  const activeClass = `effects__preview--${name}`;
   imagePreview.className = '';
   imagePreview.classList.add(activeClass);
 };
@@ -97,13 +97,13 @@ const addPreviewEffect = (effect) => {
 /**
  * Функция, для получения настроек эффекта для слайдера.
  */
-const createEffectSliderOptions = (effect) => ({
+const createEffectSliderOptions = ({ min, max, step }) => ({
   range: {
-    min: effect.min,
-    max: effect.max
+    min: min,
+    max: max
   },
-  start: effect.max,
-  step: effect.step,
+  start: max,
+  step: step,
   connect: 'lower'
 });
 
