@@ -107,14 +107,6 @@ const createEffectSliderOptions = ({ min, max, step }) => ({
 });
 
 /**
- * Функция для получения css-стиля эффекта.
- * @param {Object} effect - объект с описанием эффекта.
- * @param {string} value - значение насыщенности эффекта.
- * @returns {string} возващает строку с собранным css-эффектом.
- */
-const createEffectStyle = ({ style, unit }, value) => `${style}(${value}${unit})`;
-
-/**
  * Функция, применяет выбранный эффект к изображению.
  * @param {Object} effect - объект с описанием эффекта.
  */
@@ -127,12 +119,12 @@ const applyEffect = (effect) => {
  * Функция, выполняется при перетягивание слайдера и изменение его значения, меняет насыщенность эффекта.
  * @param {Object} effect - объект с описанием эффекта.
  */
-const dragSlider = (effect) => {
+const dragSlider = ({ style, unit }) => {
   const effectValue = effectSlider.noUiSlider.get();
 
   effectValueInput.value = effectValue;
 
-  imagePreview.style.filter = createEffectStyle(effect, effectValue);
+  imagePreview.style.filter = `${style}(${effectValue}${unit})`;
 };
 
 /**
