@@ -53,8 +53,7 @@ const effectSlider = document.querySelector('.effect-level__slider');
 const effectValueInput = document.querySelector('.effect-level__value');
 const imagePreview = document.querySelector('.img-upload__preview img');
 
-let activeEffect;
-let effectValue;
+let currentDragSliderHandler;
 
 /**
  * Функция, для получения выбранного эффекта в виде объекта.
@@ -113,7 +112,7 @@ const createEffectSliderOptions = ({ min, max, step }) => ({
  * @param {string} value - значение насыщенности эффекта.
  * @returns {string} возващает строку с собранным css-эффектом.
  */
-const createEffectStyle = (effect, value) => `${effect.style}(${value}${effect.unit})`;
+const createEffectStyle = ({ style, unit }, value) => `${style}(${value}${unit})`;
 
 /**
  * Функция, применяет выбранный эффект к изображению.
@@ -125,20 +124,38 @@ const applyEffect = (effect) => {
 };
 
 /**
- * Функция, выполняется при изменение значения слайдера, меняет насыщенность эффекта.
+ * Функция, выполняется при перетягивание слайдера и изменение его значения, меняет насыщенность эффекта.
+ * @param {Object} effect - объект с описанием эффекта.
  */
-const updateSlider = () => {
-  effectValue = effectSlider.noUiSlider.get();
+const dragSlider = (effect) => {
+  const effectValue = effectSlider.noUiSlider.get();
 
   effectValueInput.value = effectValue;
 
-  imagePreview.style.filter = createEffectStyle(activeEffect, effectValue);
+  imagePreview.style.filter = createEffectStyle(effect, effectValue);
 };
 
 /**
- * Функция, обработчик изменения значения слайдера.
+ * Функция, обработчик изменения значения слайдера использует замыкание, чтобы задать контекст для dragSlider.
+ * @param {Object} effect - объект с описанием эффекта.
  */
-const updateSliderHandler = () => updateSlider();
+const dragSliderHandler = (effect) => () => dragSlider(effect);
+
+/**
+ * Функция, добавляет новый хэндлер на слайдер.
+ * @param {Object} effect - объект с описанием эффекта.
+ */
+const addSliderHandler = (effect) => {
+  currentDragSliderHandler = dragSliderHandler(effect);
+  effectSlider.noUiSlider.on('update', currentDragSliderHandler);
+};
+
+/**
+ * Функция, удаляет текущий хэндлер со слайдера.
+ */
+const removeSliderHandler = () => {
+  effectSlider.noUiSlider.off('update', currentDragSliderHandler);
+};
 
 /**
  * Функция, создаёт слайдер и передает ему стартовые настройки стандартного эффекта.
@@ -148,8 +165,6 @@ const createSlider = (effect) => {
   const effectOptions = createEffectSliderOptions(effect);
 
   noUiSlider.create(effectSlider, effectOptions);
-
-  effectSlider.noUiSlider.on('update', updateSliderHandler);
 };
 
 /**
@@ -168,14 +183,24 @@ const changeSliderOptions = (effect) => {
 };
 
 /**
+ * Функция, применяет выбранный эффект к изображению вноси
+ * @param {Object} effect - объект с описанием эффекта.
+ */
+const changeEffect = (effect) => {
+  applyEffect(effect);
+  changeSliderOptions(effect);
+  removeSliderHandler();
+  addSliderHandler(effect);
+};
+
+/**
  * Функция, обработчик при применении эффекта к изображению.
  */
 const changeEffectHandler = (evt) => {
   if (evt.target.matches('input[name="effect"]')) {
-    activeEffect = getCheckedEffect();
+    const effect = EFFECTS[evt.target.value];
 
-    applyEffect(activeEffect);
-    changeSliderOptions(activeEffect);
+    changeEffect(effect);
   }
 };
 
@@ -193,10 +218,11 @@ const removeChangeEffectHadnler = () => effectsList.removeEventListener('change'
  * Инициализация настроек эффектов.
  */
 const initializeEffectsSettings = () => {
-  activeEffect = getCheckedEffect();
+  const effect = getCheckedEffect();
 
-  applyEffect(activeEffect);
-  createSlider(activeEffect);
+  applyEffect(effect);
+  createSlider(effect);
+  addSliderHandler(effect);
   addChangeEffectHandler();
 };
 
@@ -204,8 +230,8 @@ const initializeEffectsSettings = () => {
  * Деинициализация настроек эффектов.
  */
 const deinitializeEffectsSettings = () => {
-  removeChangeEffectHadnler();
   destroySlider();
+  removeChangeEffectHadnler();
 };
 
 export { initializeEffectsSettings, deinitializeEffectsSettings };
