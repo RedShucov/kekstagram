@@ -76,9 +76,7 @@ const checkActiveEffect = ({ name }) => {
     effectSliderContainer.classList.add('hidden');
 
     imagePreview.style.filter = '';
-  }
-
-  if (name !== 'none' && effectSliderContainer.classList.contains('hidden')) {
+  } else {
     effectSliderContainer.classList.remove('hidden');
   }
 };
