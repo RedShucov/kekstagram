@@ -86,8 +86,13 @@ const checkActiveEffect = ({ name }) => {
  * @param {Object} effect - объект с описанием эффекта.
  */
 const addPreviewEffect = ({ name }) => {
+  const oldActiveClass = Array.from(imagePreview.classList).find((className) => className.startsWith('effects__preview--'));
   const activeClass = `effects__preview--${name}`;
-  imagePreview.className = '';
+
+  if (oldActiveClass) {
+    imagePreview.classList.remove(oldActiveClass);
+  }
+
   imagePreview.classList.add(activeClass);
 };
 
