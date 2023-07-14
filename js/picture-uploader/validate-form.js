@@ -1,5 +1,3 @@
-const uploadForm = document.querySelector('.img-upload__form');
-
 const DescriptionRules = {
   MIN_LENGTH: 0,
   MAX_LENGTH: 140
@@ -15,6 +13,8 @@ const HastagsPatterns = {
   FITST_SIGN: /^#/i,
   BODY: new RegExp(`^#[a-zа-яё0-9]{${HastagsRules.MIN_LENGTH},${HastagsRules.MAX_LENGTH}}$`, 'i')
 };
+
+const uploadForm = document.querySelector('.img-upload__form');
 
 /**
  * Инициализация pristine.
