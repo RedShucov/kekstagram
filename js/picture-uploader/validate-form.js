@@ -1,5 +1,5 @@
 const DescriptionRules = {
-  MIN_LENGTH: 0,
+  MIN_LENGTH: 20,
   MAX_LENGTH: 140
 };
 
