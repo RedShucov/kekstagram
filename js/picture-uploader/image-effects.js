@@ -57,7 +57,7 @@ let currentDragSliderHandler;
 
 /**
  * Функция, для получения выбранного эффекта в виде объекта.
- * @returns {Object} объект с описанием эффекта.
+ * @returns {Object} Объект с описанием эффекта.
  */
 const getCheckedEffect = () => {
   const checkedEffect = effectsList.querySelector('.effects__radio:checked').value;
@@ -69,7 +69,7 @@ const getCheckedEffect = () => {
 
 /**
  * Функция, проверяет активный эффект, если это 'оригинал', то слайдер скрывается.
- * @returns {Object} объект с описанием эффекта.
+ * @returns {Object} Объект с описанием эффекта.
  */
 const checkActiveEffect = ({ name }) => {
   if (name === 'none') {
@@ -83,7 +83,7 @@ const checkActiveEffect = ({ name }) => {
 
 /**
  * Функция, для добавления на изображения активного класса эффекта.
- * @param {Object} effect - объект с описанием эффекта.
+ * @param {Object} effect - Объект с описанием эффекта.
  */
 const addPreviewEffect = ({ name }) => {
   const oldActiveClass = Array.from(imagePreview.classList).find((className) => className.startsWith('effects__preview--'));
@@ -111,7 +111,7 @@ const createEffectSliderOptions = ({ min, max, step }) => ({
 
 /**
  * Функция, применяет выбранный эффект к изображению.
- * @param {Object} effect - объект с описанием эффекта.
+ * @param {Object} effect - Объект с описанием эффекта.
  */
 const applyEffect = (effect) => {
   checkActiveEffect(effect);
@@ -120,7 +120,7 @@ const applyEffect = (effect) => {
 
 /**
  * Функция, выполняется при перетягивание слайдера и изменение его значения, меняет насыщенность эффекта.
- * @param {Object} effect - объект с описанием эффекта.
+ * @param {Object} effect - Объект с описанием эффекта.
  */
 const dragSlider = (slider, { style, unit }) => {
   const effectValue = slider.noUiSlider.get();
@@ -132,13 +132,13 @@ const dragSlider = (slider, { style, unit }) => {
 
 /**
  * Функция, обработчик изменения значения слайдера использует замыкание, чтобы задать контекст для dragSlider.
- * @param {Object} effect - объект с описанием эффекта.
+ * @param {Object} effect - Объект с описанием эффекта.
  */
 const dragSliderHandler = (slider, effect) => () => dragSlider(slider, effect);
 
 /**
  * Функция, добавляет новый хэндлер на слайдер.
- * @param {Object} effect - объект с описанием эффекта.
+ * @param {Object} effect - Объект с описанием эффекта.
  */
 const addSliderHandler = (slider, effect) => {
   currentDragSliderHandler = dragSliderHandler(slider, effect);
@@ -154,7 +154,7 @@ const removeSliderHandler = (slider) => {
 
 /**
  * Функция, создаёт слайдер и передает ему стартовые настройки стандартного эффекта.
- * @param {Object} effect - объект с описанием эффекта.
+ * @param {Object} effect - Объект с описанием эффекта.
  */
 const createSlider = (slider, effect) => {
   const effectOptions = createEffectSliderOptions(effect);
@@ -179,7 +179,7 @@ const changeSliderOptions = (slider, effect) => {
 
 /**
  * Функция, применяет выбранный эффект к изображению вноси
- * @param {Object} effect - объект с описанием эффекта.
+ * @param {Object} effect - Объект с описанием эффекта.
  */
 const changeEffect = (effect) => {
   applyEffect(effect);

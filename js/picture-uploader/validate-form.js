@@ -56,9 +56,9 @@ const validateHashtagDuplicates = (hashtags) => {
 };
 
 /**
- * Функция, валидирует
+ * Функция, валидирует введенные хэштеги на количество максимального количества хэштегов.
  * @param {string} hashtags - Данные из поля ввода хэштегов, в виде строки.
- * @returns
+ * @returns {boolean} true если хэштеги проходят проверку, false если нет.
  */
 const validateHashtagsLength = (hashtags) => hashtags.split(' ').length <= HastagsRules.MAX_HASHTAGS;
 
