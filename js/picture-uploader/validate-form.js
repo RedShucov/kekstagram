@@ -1,3 +1,5 @@
+import { sendData } from '../api/server.js';
+
 const DescriptionRules = {
   MIN_LENGTH: 20,
   MAX_LENGTH: 140
@@ -110,13 +112,14 @@ pristine.addValidator(
  */
 const addUserFormSubmitHandler = () => {
   uploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
     const isValid = pristine.validate();
 
     if (isValid) {
-      pristine.reset();
-      uploadForm.reset();
-    } else {
-      evt.preventDefault();
+      sendData(
+        new FormData(evt.target)
+      );
     }
   });
 };
