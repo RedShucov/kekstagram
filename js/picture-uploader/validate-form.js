@@ -108,6 +108,14 @@ pristine.addValidator(
 );
 
 /**
+ * Функция, сбрасывает значения формы при вызове.
+ */
+const resetForm = () => {
+  pristine.reset();
+  uploadForm.reset();
+};
+
+/**
  * Инициализация обработчика события для формы отправки нового изображения.
  */
 const addUserFormSubmitHandler = () => {
@@ -124,4 +132,4 @@ const addUserFormSubmitHandler = () => {
   });
 };
 
-export { addUserFormSubmitHandler };
+export { addUserFormSubmitHandler, resetForm };
