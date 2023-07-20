@@ -76,4 +76,4 @@ const addOpenModalHandlers = () => {
   imageUploadInput.addEventListener('change', openModalHandler);
 };
 
-export { addOpenModalHandlers };
+export { addOpenModalHandlers, closeUploadInterface };
