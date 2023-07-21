@@ -1,4 +1,5 @@
 const errorModalTemplate = document.querySelector('#error-load').content.querySelector('.error');
+const successModalTemplate = document.querySelector('#success-upload').content.querySelector('.success');
 
 const dataLoadError = (message) => {
   const errorModal = errorModalTemplate.cloneNode(true);
@@ -14,4 +15,11 @@ const dataLoadErrorHandler = (error) => {
   dataLoadError(error.message);
 };
 
-export { dataLoadErrorHandler };
+const showDataUploadSuccessMessage = () => {
+  const successModal = successModalTemplate.cloneNode(true);
+
+
+  document.querySelector('body').append(successModal);
+};
+
+export { dataLoadErrorHandler, showDataUploadSuccessMessage };
