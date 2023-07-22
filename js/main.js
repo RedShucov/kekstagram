@@ -2,9 +2,9 @@ import { renderThumbnails } from './render-data/render-thumbnails.js';
 import { addOpenModalHandlers, closeUploadInterface } from './picture-uploader/ulpoad-form.js';
 import { addUserFormSubmitHandler } from './picture-uploader/validate-form.js';
 import { getData } from './api/server.js';
-import { dataLoadErrorHandler, showDataUploadSuccessMessage } from './api/data-status.js';
+import { showDataLoadErrorMessage, showDataUploadSuccessMessage, showDataUploadErrorMessage } from './api/data-status.js';
 
-getData(renderThumbnails, dataLoadErrorHandler);
+getData(renderThumbnails, showDataLoadErrorMessage);
 
 addOpenModalHandlers();
-addUserFormSubmitHandler(closeUploadInterface, showDataUploadSuccessMessage);
+addUserFormSubmitHandler(closeUploadInterface, showDataUploadSuccessMessage, showDataUploadErrorMessage);

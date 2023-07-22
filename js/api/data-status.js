@@ -1,25 +1,25 @@
 const errorModalTemplate = document.querySelector('#error-load').content.querySelector('.error');
+const errorUploadModalTemplate = document.querySelector('#error-upload').content.querySelector('.error');
 const successModalTemplate = document.querySelector('#success-upload').content.querySelector('.success');
 
-const dataLoadError = (message) => {
+const showDataLoadErrorMessage = () => {
   const errorModal = errorModalTemplate.cloneNode(true);
 
-  errorModal.querySelector('.error__title').textContent = message;
+  errorModal.querySelector('.error__title').textContent = 'Не удалось установить соединение с сервером.';
 
   document.querySelector('body').append(errorModal);
 };
 
-const dataLoadErrorHandler = (error) => {
-  error.message = 'Не удалось установить соединение с сервером.';
+const showDataUploadErrorMessage = () => {
+  const errorModal = errorUploadModalTemplate.cloneNode(true);
 
-  dataLoadError(error.message);
+  document.querySelector('body').append(errorModal);
 };
 
 const showDataUploadSuccessMessage = () => {
   const successModal = successModalTemplate.cloneNode(true);
 
-
   document.querySelector('body').append(successModal);
 };
 
-export { dataLoadErrorHandler, showDataUploadSuccessMessage };
+export { showDataLoadErrorMessage, showDataUploadSuccessMessage, showDataUploadErrorMessage };

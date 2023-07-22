@@ -118,7 +118,7 @@ const resetForm = () => {
 /**
  * Инициализация обработчика события для формы отправки нового изображения.
  */
-const addUserFormSubmitHandler = (onSuccess) => {
+const addUserFormSubmitHandler = (onSuccess, successMessage, errorMessage) => {
   uploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -127,7 +127,13 @@ const addUserFormSubmitHandler = (onSuccess) => {
     if (isValid) {
       sendData(
         new FormData(evt.target),
-        onSuccess
+        () => {
+          onSuccess();
+          successMessage();
+        },
+        () => {
+          errorMessage();
+        }
       );
     }
   });
