@@ -1,25 +1,47 @@
-const errorModalTemplate = document.querySelector('#error-load').content.querySelector('.error');
+import { isEscapeKey } from '../util.js';
+
+const errorLoadModalTemplate = document.querySelector('#error-load').content.querySelector('.error');
 const errorUploadModalTemplate = document.querySelector('#error-upload').content.querySelector('.error');
-const successModalTemplate = document.querySelector('#success-upload').content.querySelector('.success');
+const successUploadModalTemplate = document.querySelector('#success-upload').content.querySelector('.success');
+
+const body = document.querySelector('body');
+
+const showMessage = (message) => {
+  document.addEventListener('keydown', keydownMessageHandler);
+  body.style.overflow = 'hidden';
+  body.append(message);
+};
+
+const hideMessage = () => {
+  const message = body.querySelector('.success') || body.querySelector('.error');
+
+  document.removeEventListener('keydown', keydownMessageHandler);
+  body.style.overflow = 'auto';
+  message.remove();
+};
 
 const showDataLoadErrorMessage = () => {
-  const errorModal = errorModalTemplate.cloneNode(true);
+  const errorMessage = errorLoadModalTemplate.cloneNode(true);
 
-  errorModal.querySelector('.error__title').textContent = 'Не удалось установить соединение с сервером.';
-
-  document.querySelector('body').append(errorModal);
+  showMessage(errorMessage);
 };
 
 const showDataUploadErrorMessage = () => {
-  const errorModal = errorUploadModalTemplate.cloneNode(true);
+  const errorMessage = errorUploadModalTemplate.cloneNode(true);
 
-  document.querySelector('body').append(errorModal);
+  showMessage(errorMessage);
 };
 
 const showDataUploadSuccessMessage = () => {
-  const successModal = successModalTemplate.cloneNode(true);
+  const successMessage = successUploadModalTemplate.cloneNode(true);
 
-  document.querySelector('body').append(successModal);
+  showMessage(successMessage);
 };
+
+function keydownMessageHandler(evt) {
+  if (isEscapeKey(evt)) {
+    hideMessage();
+  }
+}
 
 export { showDataLoadErrorMessage, showDataUploadSuccessMessage, showDataUploadErrorMessage };

@@ -42,7 +42,9 @@ const closeModalHandler = () => {
  */
 const keydownUploadFormHandler = (evt) => {
   if (isEscapeKey(evt) && !isItFocus(evt, 'hashtags', 'description')) {
-    closeUploadInterface();
+    if (document.querySelector('.error') === null) {
+      closeUploadInterface();
+    }
   }
 };
 
