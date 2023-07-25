@@ -8,6 +8,7 @@ const body = document.querySelector('body');
 
 const showMessage = (message) => {
   document.addEventListener('keydown', keydownMessageHandler);
+  message.addEventListener('click', overlayClickHandler);
   body.style.overflow = 'hidden';
   body.append(message);
 };
@@ -16,6 +17,7 @@ const hideMessage = () => {
   const message = body.querySelector('.success') || body.querySelector('.error');
 
   document.removeEventListener('keydown', keydownMessageHandler);
+  message.removeEventListener('click', overlayClickHandler);
   body.style.overflow = 'auto';
   message.remove();
 };
@@ -40,6 +42,14 @@ const showDataUploadSuccessMessage = () => {
 
 function keydownMessageHandler(evt) {
   if (isEscapeKey(evt)) {
+    hideMessage();
+  }
+}
+
+function overlayClickHandler(evt) {
+  const target = evt.target.classList;
+
+  if (target.contains('success') || target.contains('error')) {
     hideMessage();
   }
 }
