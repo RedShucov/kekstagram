@@ -19,6 +19,7 @@ const hideMessage = () => {
 
   document.removeEventListener('keydown', keydownMessageHandler);
   message.removeEventListener('click', overlayClickHandler);
+  message.querySelector('button').removeEventListener('click', closeMessageHandler);
   body.style.overflow = 'auto';
   message.remove();
 };
