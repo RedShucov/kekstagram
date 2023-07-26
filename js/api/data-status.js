@@ -9,6 +9,7 @@ const body = document.querySelector('body');
 const showMessage = (message) => {
   document.addEventListener('keydown', keydownMessageHandler);
   message.addEventListener('click', overlayClickHandler);
+  message.querySelector('button').addEventListener('click', closeMessageHandler);
   body.style.overflow = 'hidden';
   body.append(message);
 };
@@ -52,6 +53,10 @@ function overlayClickHandler(evt) {
   if (target.contains('success') || target.contains('error')) {
     hideMessage();
   }
+}
+
+function closeMessageHandler() {
+  hideMessage();
 }
 
 export { showDataLoadErrorMessage, showDataUploadSuccessMessage, showDataUploadErrorMessage };
