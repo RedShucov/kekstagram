@@ -1,7 +1,7 @@
-const uploadForm = document.querySelector('.img-upload__form');
+import { sendData } from '../api/server.js';
 
 const DescriptionRules = {
-  MIN_LENGTH: 0,
+  MIN_LENGTH: 20,
   MAX_LENGTH: 140
 };
 
@@ -15,6 +15,8 @@ const HastagsPatterns = {
   FITST_SIGN: /^#/i,
   BODY: new RegExp(`^#[a-zа-яё0-9]{${HastagsRules.MIN_LENGTH},${HastagsRules.MAX_LENGTH}}$`, 'i')
 };
+
+const uploadForm = document.querySelector('.img-upload__form');
 
 /**
  * Инициализация pristine.
@@ -56,9 +58,9 @@ const validateHashtagDuplicates = (hashtags) => {
 };
 
 /**
- * Функция, валидирует
+ * Функция, валидирует введенные хэштеги на количество максимального количества хэштегов.
  * @param {string} hashtags - Данные из поля ввода хэштегов, в виде строки.
- * @returns
+ * @returns {boolean} true если хэштеги проходят проверку, false если нет.
  */
 const validateHashtagsLength = (hashtags) => hashtags.split(' ').length <= HastagsRules.MAX_HASHTAGS;
 
@@ -106,19 +108,35 @@ pristine.addValidator(
 );
 
 /**
+ * Функция, сбрасывает значения формы при вызове.
+ */
+const resetForm = () => {
+  pristine.reset();
+  uploadForm.reset();
+};
+
+/**
  * Инициализация обработчика события для формы отправки нового изображения.
  */
-const addUserFormSubmitHandler = () => {
+const addUserFormSubmitHandler = (onSuccess, successMessage, errorMessage) => {
   uploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
     const isValid = pristine.validate();
 
     if (isValid) {
-      pristine.reset();
-      uploadForm.reset();
-    } else {
-      evt.preventDefault();
+      sendData(
+        new FormData(evt.target),
+        () => {
+          onSuccess();
+          successMessage();
+        },
+        () => {
+          errorMessage();
+        }
+      );
     }
   });
 };
 
-export { addUserFormSubmitHandler };
+export { addUserFormSubmitHandler, resetForm };

@@ -1,6 +1,7 @@
 import { isEscapeKey, isItFocus, showModal, hideModal } from '../util.js';
 import { addPreviewScaleHandlers, removePreviewScaleHandlers } from './image-scale.js';
 import { initializeEffectsSettings, deinitializeEffectsSettings } from './image-effects.js';
+import { resetForm } from './validate-form.js';
 
 const imageUploadForm = document.querySelector('#upload-select-image');
 const imageUploadInput = imageUploadForm.querySelector('#upload-file');
@@ -25,6 +26,7 @@ const closeUploadInterface = () => {
   removeCloseModalHandlers();
   removePreviewScaleHandlers();
   deinitializeEffectsSettings();
+  resetForm();
 };
 
 /**
@@ -40,7 +42,9 @@ const closeModalHandler = () => {
  */
 const keydownUploadFormHandler = (evt) => {
   if (isEscapeKey(evt) && !isItFocus(evt, 'hashtags', 'description')) {
-    closeUploadInterface();
+    if (document.querySelector('.error') === null) {
+      closeUploadInterface();
+    }
   }
 };
 
@@ -74,4 +78,4 @@ const addOpenModalHandlers = () => {
   imageUploadInput.addEventListener('change', openModalHandler);
 };
 
-export { addOpenModalHandlers };
+export { addOpenModalHandlers, closeUploadInterface };

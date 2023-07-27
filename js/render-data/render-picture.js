@@ -56,11 +56,11 @@ const checkFullComments = (comments) => {
 
 /**
  * Функция, создает HTML-код комментария для отображения в списке комментариев.
- * @param {Object} comment - параметры комментария.
+ * @param {Object} comment - Параметры комментария.
  * @param {string} comment.avatar - URL-адрес аватарки пользователя.
- * @param {string} comment.name - имя пользователя.
- * @param {string} comment.message - текст комментария.
- * @returns {string} - строка с HTML-кодом комментария.
+ * @param {string} comment.name - Имя пользователя.
+ * @param {string} comment.message - Текст комментария.
+ * @returns {string} - Строка с HTML-кодом комментария.
  */
 const createComment = ({ avatar, message, name }) => {
   const comment = commentTemplate.cloneNode(true);
@@ -75,7 +75,7 @@ const createComment = ({ avatar, message, name }) => {
 
 /**
  * Функция, отрисовывает комментарии к фотографии.
- * @param {Array} comments - массив комментариев к фотографии.
+ * @param {Array} comments - Массив комментариев к фотографии.
  */
 const renderComments = (comments) => {
   const shownСommentsCount = document.querySelectorAll('.social__comment').length;
@@ -93,7 +93,7 @@ const renderComments = (comments) => {
 
 /**
  * Функция, обработчик события отрисовки комментариев.
- * @param {Array} comments - массив комментариев к фотографии.
+ * @param {Array} comments - Массив комментариев к фотографии.
  */
 const renderCommentsHandler = (comments) => () => {
   renderComments(comments);
@@ -101,11 +101,11 @@ const renderCommentsHandler = (comments) => () => {
 
 /**
  * Функция, заполняет контейнер с большим фото данными выбранной фотографии.
- * @param {Object} photoData - параметры фотографии.
+ * @param {Object} photoData - Параметры фотографии.
  * @param {string} photoData.url - URL-адрес фотографии.
- * @param {string} photoData.description - описание фотографии.
- * @param {Array} photoData.comments - массив комментариев к фотографии.
- * @param {number} photoData.likes - количество лайков фотографии.
+ * @param {string} photoData.description - Описание фотографии.
+ * @param {Array} photoData.comments - Массив комментариев к фотографии.
+ * @param {number} photoData.likes - Количество лайков фотографии.
  */
 const renderPhoto = ({ url, description, comments, likes }) => {
   photoImage.src = url;
@@ -120,7 +120,7 @@ const renderPhoto = ({ url, description, comments, likes }) => {
 
 /**
  * Функция, обработчик при клике на миниатюру отрисовывает полную версию фотографии на странице.
- * @param {Object} photoData - данные о фотографии.
+ * @param {Object} photoData - Данные о фотографии.
  */
 const renderFullPhotoHandler = (photoData) => () => {
   renderPhoto(photoData);
