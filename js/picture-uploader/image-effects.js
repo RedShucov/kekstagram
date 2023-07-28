@@ -1,4 +1,4 @@
-const EFFECTS = {
+const effects = {
   chrome: {
     name: 'chrome',
     style: 'grayscale',
@@ -62,7 +62,7 @@ let currentDragSliderHandler;
 const getCheckedEffect = () => {
   const checkedEffect = effectsList.querySelector('.effects__radio:checked').value;
 
-  const effect = EFFECTS[checkedEffect];
+  const effect = effects[checkedEffect];
 
   return effect;
 };
@@ -193,7 +193,7 @@ const changeEffect = (effect) => {
  */
 const changeEffectHandler = (evt) => {
   if (evt.target.matches('input[name="effect"]')) {
-    const effect = EFFECTS[evt.target.value];
+    const effect = effects[evt.target.value];
 
     changeEffect(effect);
   }
