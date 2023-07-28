@@ -1,5 +1,5 @@
 import { isEscapeKey, isItFocus, showModal, hideModal } from '../util.js';
-import { addPreviewScaleHandlers, removePreviewScaleHandlers } from './image-scale.js';
+import { addHandlersToPreviewScale, removeHandlersToPreviewScale } from './image-scale.js';
 import { initializeEffectsSettings, deinitializeEffectsSettings } from './image-effects.js';
 import { resetForm } from './validate-form.js';
 
@@ -13,8 +13,8 @@ const imageUploadClosure = imageUploadForm.querySelector('#upload-cancel');
  */
 const openUploadInterface = () => {
   showModal(imageUploadInterface);
-  addCloseModalHandlers();
-  addPreviewScaleHandlers();
+  addHandlersToCloseModal();
+  addHandlersToPreviewScale();
   initializeEffectsSettings();
 };
 
@@ -23,8 +23,8 @@ const openUploadInterface = () => {
  */
 const closeUploadInterface = () => {
   hideModal(imageUploadInterface);
-  removeCloseModalHandlers();
-  removePreviewScaleHandlers();
+  removeHandlersToCloseModal();
+  removeHandlersToPreviewScale();
   deinitializeEffectsSettings();
   resetForm();
 };
@@ -51,7 +51,7 @@ const keydownUploadFormHandler = (evt) => {
 /**
  * Инициализация обработчиков для закрытия интерфейса добавления новой фотографии.
  */
-function addCloseModalHandlers() {
+function addHandlersToCloseModal() {
   imageUploadClosure.addEventListener('click', closeModalHandler);
   document.addEventListener('keydown', keydownUploadFormHandler);
 }
@@ -59,7 +59,7 @@ function addCloseModalHandlers() {
 /**
  * Удаление обработчиков для закрытия интерфейса добавления новой фотографии.
  */
-function removeCloseModalHandlers() {
+function removeHandlersToCloseModal() {
   imageUploadClosure.removeEventListener('click', closeModalHandler);
   document.removeEventListener('keydown', keydownUploadFormHandler);
 }
@@ -74,8 +74,8 @@ const openModalHandler = () => {
 /**
  * Инициализация обработчиков для модального окна.
  */
-const addOpenModalHandlers = () => {
+const addHandlerToOpenModal = () => {
   imageUploadInput.addEventListener('change', openModalHandler);
 };
 
-export { addOpenModalHandlers, closeUploadInterface };
+export { addHandlerToOpenModal, closeUploadInterface };

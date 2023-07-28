@@ -58,7 +58,7 @@ const increasePreviewScaleHandler = () => {
 /**
  * Инициализация обработчиков для изменения мастштаба изображения.
  */
-const addPreviewScaleHandlers = () => {
+const addHandlersToPreviewScale = () => {
   buttonDecreaseScale.addEventListener('click', decreasePreviewScaleHandler);
   buttonIncreaseScale.addEventListener('click', increasePreviewScaleHandler);
 };
@@ -66,9 +66,9 @@ const addPreviewScaleHandlers = () => {
 /**
  * Удаление обработчиков для изменения мастштаба изображения.
  */
-const removePreviewScaleHandlers = () => {
+const removeHandlersToPreviewScale = () => {
   buttonDecreaseScale.removeEventListener('click', decreasePreviewScaleHandler);
   buttonIncreaseScale.removeEventListener('click', increasePreviewScaleHandler);
 };
 
-export { addPreviewScaleHandlers, removePreviewScaleHandlers };
+export { addHandlersToPreviewScale, removeHandlersToPreviewScale };

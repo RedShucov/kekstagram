@@ -140,7 +140,7 @@ const dragSliderHandler = (slider, effect) => () => dragSlider(slider, effect);
  * Функция, добавляет новый хэндлер на слайдер.
  * @param {Object} effect - Объект с описанием эффекта.
  */
-const addSliderHandler = (slider, effect) => {
+const addHandlerToSlider = (slider, effect) => {
   currentDragSliderHandler = dragSliderHandler(slider, effect);
   slider.noUiSlider.on('update', currentDragSliderHandler);
 };
@@ -148,7 +148,7 @@ const addSliderHandler = (slider, effect) => {
 /**
  * Функция, удаляет текущий хэндлер со слайдера.
  */
-const removeSliderHandler = (slider) => {
+const removeHandlerToSlider = (slider) => {
   slider.noUiSlider.off('update', currentDragSliderHandler);
 };
 
@@ -184,8 +184,8 @@ const changeSliderOptions = (slider, effect) => {
 const changeEffect = (effect) => {
   applyEffect(effect);
   changeSliderOptions(effectSlider, effect);
-  removeSliderHandler(effectSlider);
-  addSliderHandler(effectSlider, effect);
+  removeHandlerToSlider(effectSlider);
+  addHandlerToSlider(effectSlider, effect);
 };
 
 /**
@@ -202,12 +202,12 @@ const changeEffectHandler = (evt) => {
 /**
  * Инициализация обработчиков для приминения эффекта к изображению.
  */
-const addChangeEffectHandler = () => effectsList.addEventListener('change', changeEffectHandler);
+const addHandlerToChangeEffect = () => effectsList.addEventListener('change', changeEffectHandler);
 
 /**
- * Удаление обработчиков для применения эффекта к изображени/.
+ * Удаление обработчиков для применения эффекта к изображению.
  */
-const removeChangeEffectHadnler = () => effectsList.removeEventListener('change', changeEffectHandler);
+const removeHadnlerToChangeEffect = () => effectsList.removeEventListener('change', changeEffectHandler);
 
 /**
  * Инициализация настроек эффектов.
@@ -217,8 +217,8 @@ const initializeEffectsSettings = () => {
 
   applyEffect(effect);
   createSlider(effectSlider, effect);
-  addSliderHandler(effectSlider, effect);
-  addChangeEffectHandler();
+  addHandlerToSlider(effectSlider, effect);
+  addHandlerToChangeEffect();
 };
 
 /**
@@ -226,7 +226,7 @@ const initializeEffectsSettings = () => {
  */
 const deinitializeEffectsSettings = () => {
   destroySlider(effectSlider);
-  removeChangeEffectHadnler();
+  removeHadnlerToChangeEffect();
 };
 
 export { initializeEffectsSettings, deinitializeEffectsSettings };

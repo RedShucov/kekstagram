@@ -20,7 +20,7 @@ let currentCommentsHandler;
  */
 const openFullPhoto = () => {
   showModal(photo);
-  addFullPhotoHandlers();
+  addHandlersToFullPhoto();
 };
 
 /**
@@ -28,7 +28,7 @@ const openFullPhoto = () => {
  */
 const closeFullPhoto = () => {
   hideModal(photo);
-  removeFullPhotoHandlers();
+  removeHandlersToFullPhoto();
 };
 
 /**
@@ -144,13 +144,13 @@ const keydownFullPhotoHandler = (evt) => {
   }
 };
 
-function addFullPhotoHandlers() {
+function addHandlersToFullPhoto() {
   photoCommentsLoader.addEventListener('click', currentCommentsHandler);
   photoClosure.addEventListener('click', clickCloseFullPhotoHandler);
   document.addEventListener('keydown', keydownFullPhotoHandler);
 }
 
-function removeFullPhotoHandlers() {
+function removeHandlersToFullPhoto() {
   photoCommentsLoader.removeEventListener('click', currentCommentsHandler);
   photoClosure.removeEventListener('click', clickCloseFullPhotoHandler);
   document.removeEventListener('keydown', keydownFullPhotoHandler);
